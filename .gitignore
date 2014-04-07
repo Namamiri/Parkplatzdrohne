@@ -10,6 +10,4 @@ Temp
 Build
 /Temp
 /library
-*.csproj
 *.unityproj
-*.sln
