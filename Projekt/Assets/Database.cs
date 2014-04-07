@@ -5,10 +5,7 @@ using Mono.Data.SqliteClient;
 using System;
 [ExecuteInEditMode()]  
 public class Database {
-	string _strDBName = "URI=file:MasterSQLite.db";
-	IDbConnection _connection = new SqliteConnection(_strDBName);
-	IDbCommand _command = _connection .CreateCommand();
-	string sql;
+
 
 	public void Start () {
 
@@ -45,7 +42,7 @@ public class Database {
 		//_command = null;
 		//_connection .Close();
 		//_connection = null;
-		this.createDatabase ();
+		//this.createDatabase ();
 
 	}
 	
@@ -54,6 +51,10 @@ public class Database {
 	}
 
 	void createDatabase(){
+		string _strDBName = "URI=file:MasterSQLite.db";
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
 		_connection .Open();
 
 		sql = "CREATE TABLE Routenpunkte (ID INT, XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";

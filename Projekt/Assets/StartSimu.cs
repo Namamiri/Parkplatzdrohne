@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class dfztjhdfg : MonoBehaviour {
+public class StartSimu : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
