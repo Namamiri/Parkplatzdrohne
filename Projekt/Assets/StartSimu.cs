@@ -7,10 +7,14 @@ public class StartSimu : MonoBehaviour {
 	void Start () {
 		Database datenbank = new Database ();;
 		datenbank.Start ();
+		KeyEvent key = new KeyEvent ();
+
+
 	}
-	
+
+
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 }
