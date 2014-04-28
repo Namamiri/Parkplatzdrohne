@@ -49,29 +49,65 @@ public class Database {
 	// Update is called once per frame
 	void Update () {
 	}
+	object abfrageexisttabelle(string Tabellenname){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT count(name) as Count FROM sqlite_master WHERE type='table' AND name='Routenpunkte"+Tabellenname+"'";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		_reader.Read ();
+		_connection .Close();
+		_connection = null;
+		_reader.Close();
+		return _reader["Count"];
 
+	}
 	void createDatabase(){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
+
 		_connection .Open();
 
-		sql = "CREATE TABLE Routenpunkte (ID INT, XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
-		_command.CommandText = sql;
-		_command.ExecuteNonQuery();
-		sql = "CREATE TABLE TYPPUNKTE (ID INT, TYPBEZEICHNUNG VARCHAR(55), PRIMARY KEY(ID))";
-		_command.CommandText = sql;
-		_command.ExecuteNonQuery();
-		sql = "CREATE TABLE ROUTE (ROUTENID INT, POSITION INT, PUNKTID INT, PRIMARY KEY(ROUTENID, POSITION))";
-		_command.CommandText = sql;
-		_command.ExecuteNonQuery();
-		sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), PRIMARY KEY(PARKPLATZNUMMER))";
-		_command.CommandText = sql;
-		_command.ExecuteNonQuery();
-		sql = "CREATE TABLE DRONEN (ID INT, AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKT ID, PRIMARY KEY(ID))";
-		_command.CommandText = sql;
-		_command.ExecuteNonQuery();
+		if (abfrageexisttabelle ("Routenpunkte").Equals ("0")) {
+						sql = "CREATE TABLE Routenpunkte (ID INT, XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
+						_command.CommandText = sql;
+						_command.ExecuteNonQuery ();
+				} else {
+			Debug.Log("Routenpunkte Exists");
+				}
+		if (abfrageexisttabelle ("TYPPUNKTE").Equals ("0")) {
+						sql = "CREATE TABLE TYPPUNKTE (ID INT, TYPBEZEICHNUNG VARCHAR(55), PRIMARY KEY(ID))";
+						_command.CommandText = sql;
+						_command.ExecuteNonQuery();
+		} else {
+			Debug.Log("TYPPUNKTE Exists");
+		}
+		if (abfrageexisttabelle ("ROUTE").Equals ("0")) {
+						sql = "CREATE TABLE ROUTE (ROUTENID INT, POSITION INT, PUNKTID INT, PRIMARY KEY(ROUTENID, POSITION))";
+						_command.CommandText = sql;
+						_command.ExecuteNonQuery();
+		} else {
+			Debug.Log("ROUTE Exists");
+		}
+		if (abfrageexisttabelle ("PARKPLATZ").Equals ("0")) {
+						sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), PRIMARY KEY(PARKPLATZNUMMER))";
+						_command.CommandText = sql;
+						_command.ExecuteNonQuery();
+		} else {
+			Debug.Log("PARKPLATZ Exists");
+		}
+		if (abfrageexisttabelle ("DRONEN").Equals ("0")) {
+						sql = "CREATE TABLE DRONEN (ID INT, AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKT ID, PRIMARY KEY(ID))";
+						_command.CommandText = sql;
+						_command.ExecuteNonQuery();
+		} else {
+			Debug.Log("DRONEN Exists");
+		}
 
 		_command.Dispose();
 		//_command = null;
