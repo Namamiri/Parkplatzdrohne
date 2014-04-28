@@ -6,18 +6,13 @@ public class StartSimu : MonoBehaviour {
 	List<GameObject> Cars = new List<GameObject>();
 	// Use this for initialization
 	void Start () {
-
-		Cars.Add(CreateCar.fromPrefab ());
-		Database datenbank = new Database ();;
-		datenbank.Start ();
-		KeyEvent key = new KeyEvent ();
-
-
+		Database datenbank = new Database ();
+		datenbank.createDatabase ();
+		this.Cars.Add(CreateCar.fromPrefab ());
 	}
-
-
+	
 	// Update is called once per frame
 	void Update () {
-
+	
 	}
 }

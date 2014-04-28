@@ -65,7 +65,7 @@ public class Database {
 		return _reader["Count"];
 
 	}
-	void createDatabase(){
+	public void createDatabase(){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
