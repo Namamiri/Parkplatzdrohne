@@ -78,7 +78,7 @@ public class Database {
 		deleteTabelle ("Routenpunkte");
 
 		if (abfrageexisttabelle ("Routenpunkte").Equals ("0")) {
-						sql = "CREATE TABLE Routenpunkte (ID INT, XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
+						sql = "CREATE TABLE Routenpunkte (ID INT, Knotenname VARCHAR(55), XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery ();
 				} else {
@@ -144,7 +144,7 @@ public class Database {
 		_connection .Close();
 		}
 
-	public static List<Parkplatz> getfreeParkplatz(){
+	public List<Parkplatz> getfreeParkplatz(){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
@@ -156,10 +156,10 @@ public class Database {
 		List<Parkplatz> Liste= new List<Parkplatz> ();
 		while (_reader.Read ()) {
 			Parkplatz platz=new Parkplatz();
-			platz.setPARKPLATZNUMMER(_reader["PARKPLATZNUMMER"]);
-			platz.setFREI(_reader["FREI"]);
-			platz.setKENNZEICHEN(_reader["KENNZEICHENFAHRZEUG"]);
-			platz.setROUTENID(_reader["ROUTENID"]);
+			platz.setPARKPLATZNUMMER(_reader["PARKPLATZNUMMER"] as String);
+			platz.setFREI(_reader["FREI"] as String);
+			platz.setKENNZEICHEN(_reader["KENNZEICHENFAHRZEUG"] as String);
+			platz.setROUTENID(_reader["ROUTENID"] as String);
 
 			Liste.Add(platz);
 
