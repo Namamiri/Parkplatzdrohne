@@ -7,23 +7,25 @@ public class Autos  {
 	string Kennzeichen;
 	int Status;
 
-	void setID(string ID){
+	public void setID(string ID){
 		this.ID = System.Convert.ToInt32 (ID);
 		}
-	void setKennzeichen(string Kennzeichen){
+	public void setKennzeichen(string Kennzeichen){
 		this.Kennzeichen = Kennzeichen;
 	}
-	void setStatus(string Status){
+	public void setStatus(string Status){
 		this.Status = System.Convert.ToInt32 (Status);
 	}
 
-	int getID(){
+	public int getID(){
 		return this.ID;
 		}
-	string getKennzeichen(){
-		return this.Kennzeichen;
-		}
-	int getStatus(){
+
+	public int getStatus(){
 		return this.Status;
 		}
+
+	public string getKennzeichen(){
+		return this.Kennzeichen;
+	}
 }

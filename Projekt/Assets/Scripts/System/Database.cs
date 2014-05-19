@@ -191,7 +191,7 @@ public class Database {
 		
 		_connection .Open();
 
-		sql = "INSERT INTO AUTOS (KENNZEICHEN, STATUS) Values ('"+ autodaten.getKennzeichen()+"','"+autodaten.getStatus()+"')";
+		sql = "INSERT INTO AUTOS (KENNZEICHEN, STATUS) Values ('"+ autodaten.getKennzeichen ()+"','"+autodaten.getStatus ()+"')";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery();
 
@@ -209,7 +209,7 @@ public class Database {
 		
 		_connection .Open();
 		
-		sql = "UPDATE AUTOS SET STATUS = '0' WHERE KENNZEICHEN = '"+autodaten.getKennzeichen()+"'";
+		sql = "UPDATE AUTOS SET STATUS = '0' WHERE KENNZEICHEN = '"+autodaten.getKennzeichen ()+"'";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery();
 		
@@ -219,4 +219,29 @@ public class Database {
 		//_connection = null;
 		
 	}
+
+	public Autos getActiveAuto(){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM AUTOS WHERE STATUS='1' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+
+		_reader.Read ();
+		Autos Auto=new Autos();
+		Auto.setID (_reader ["ID"] as String);
+		Auto.setKennzeichen(_reader ["KENNZEICHEN"] as String);
+		Auto.setStatus (_reader ["STATUS"] as String);
+		
+		
+		_command.Dispose();
+		_connection .Close();
+		_connection = null;
+		_reader.Close();
+		return Auto;
+		}
+
 }
