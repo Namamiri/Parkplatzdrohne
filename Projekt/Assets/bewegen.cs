@@ -14,7 +14,7 @@ public class bewegen : MonoBehaviour {
 			gameObject.transform.Translate(2, 2, 2);
 			gameObject.renderer.material.color = Color.red;
 			Debug.Log("rechts");
-			GameObject.Find("Ampel").;
+			//GameObject.Find("Ampel");
 		}
 		if (Input.GetKeyDown (KeyCode.LeftArrow)) {
 			gameObject.transform.Translate(-2, -2, -2);
