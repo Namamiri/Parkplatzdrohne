@@ -3,6 +3,8 @@ using System.Collections;
 using System.Data;
 using Mono.Data.SqliteClient;
 using System;
+using System.Collections.Generic;
+
 [ExecuteInEditMode()]  
 public class Database {
 	string _strDBName = "URI=file:MasterSQLite.db";
@@ -73,13 +75,18 @@ public class Database {
 
 		_connection .Open();
 
+		deleteTabelle ("Routenpunkte");
+
 		if (abfrageexisttabelle ("Routenpunkte").Equals ("0")) {
-						sql = "CREATE TABLE Routenpunkte (ID INT, XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
+						sql = "CREATE TABLE Routenpunkte (ID INT, Knotenname VARCHAR(55), XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery ();
 				} else {
 			Debug.Log("Routenpunkte Exists");
 				}
+
+		deleteTabelle ("TYPPUNKTE");
+
 		if (abfrageexisttabelle ("TYPPUNKTE").Equals ("0")) {
 						sql = "CREATE TABLE TYPPUNKTE (ID INT, TYPBEZEICHNUNG VARCHAR(55), PRIMARY KEY(ID))";
 						_command.CommandText = sql;
@@ -87,6 +94,9 @@ public class Database {
 		} else {
 			Debug.Log("TYPPUNKTE Exists");
 		}
+
+		deleteTabelle ("ROUTE");
+
 		if (abfrageexisttabelle ("ROUTE").Equals ("0")) {
 						sql = "CREATE TABLE ROUTE (ROUTENID INT, POSITION INT, PUNKTID INT, PRIMARY KEY(ROUTENID, POSITION))";
 						_command.CommandText = sql;
@@ -94,6 +104,9 @@ public class Database {
 		} else {
 			Debug.Log("ROUTE Exists");
 		}
+
+		deleteTabelle ("PARKPLATZ");
+
 		if (abfrageexisttabelle ("PARKPLATZ").Equals ("0")) {
 						sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), PRIMARY KEY(PARKPLATZNUMMER))";
 						_command.CommandText = sql;
@@ -101,8 +114,11 @@ public class Database {
 		} else {
 			Debug.Log("PARKPLATZ Exists");
 		}
+
+		deleteTabelle ("DRONEN");
+
 		if (abfrageexisttabelle ("DRONEN").Equals ("0")) {
-						sql = "CREATE TABLE DRONEN (ID INT, AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKT ID, PRIMARY KEY(ID))";
+						sql = "CREATE TABLE DRONEN (ID INT, AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,  PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
@@ -113,5 +129,47 @@ public class Database {
 		//_command = null;
 		_connection .Close();
 		//_connection = null;
+	}
+	public void deleteTabelle(string Tabelle){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection .Open();
+		sql = "DROP TABLE "+Tabelle+" ";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+
+
+		_command.Dispose();
+		_connection .Close();
+		}
+
+	public List<Parkplatz> getfreeParkplatz(){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM PARKPLATZ WHERE FREI=1 ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		List<Parkplatz> Liste= new List<Parkplatz> ();
+		while (_reader.Read ()) {
+			Parkplatz platz=new Parkplatz();
+			platz.setPARKPLATZNUMMER(_reader["PARKPLATZNUMMER"] as String);
+			platz.setFREI(_reader["FREI"] as String);
+			platz.setKENNZEICHEN(_reader["KENNZEICHENFAHRZEUG"] as String);
+			platz.setROUTENID(_reader["ROUTENID"] as String);
+
+			Liste.Add(platz);
+
+				};
+
+		
+		_command.Dispose();
+		_connection .Close();
+		_connection = null;
+		_reader.Close();
+		return Liste;
 	}
 }

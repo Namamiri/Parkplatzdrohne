@@ -8,7 +8,9 @@ public class StartSimu : MonoBehaviour {
 	void Start () {
 		Database datenbank = new Database ();
 		datenbank.createDatabase ();
-		this.Cars.Add(CreateCar.fromPrefab ());
+		//this.Cars.Add(CreateCar.fromPrefab ());
+		this.Cars.Add(CreateCar.fromfbx ());
+		this.Cars.Add (CreateCar.fromfbx ());
 	}
 	
 	// Update is called once per frame
