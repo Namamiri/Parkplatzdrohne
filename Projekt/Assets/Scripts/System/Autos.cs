@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Autos : MonoBehaviour {
+public class Autos  {
 
 	// Use this for initialization
 	void Start () {
