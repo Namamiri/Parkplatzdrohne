@@ -76,27 +76,27 @@ public class Database {
 
 		_connection .Open();
 
-		deleteTabelle ("Routenpunkte");
+		//deleteTabelle ("Routenpunkte");
 
 		if (abfrageexisttabelle ("Routenpunkte") == 0) {
-			sql = "CREATE TABLE Routenpunkte (ID INT AUTOINCREMENT, Knotenname VARCHAR(55), XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
+			sql = "CREATE TABLE Routenpunkte (ID INT , Knotenname VARCHAR(55), XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery ();
 				} else {
 			Debug.Log("Routenpunkte Exists");
 				}
 
-		deleteTabelle ("TYPPUNKTE");
+		//deleteTabelle ("TYPPUNKTE");
 
 		if (abfrageexisttabelle ("TYPPUNKTE") == 0) {
-			sql = "CREATE TABLE TYPPUNKTE (ID INT AUTOINCREMENT, TYPBEZEICHNUNG VARCHAR(55), PRIMARY KEY(ID))";
+			sql = "CREATE TABLE TYPPUNKTE (ID INT, TYPBEZEICHNUNG VARCHAR(55), PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
 			Debug.Log("TYPPUNKTE Exists");
 		}
 
-		deleteTabelle ("ROUTE");
+		//deleteTabelle ("ROUTE");
 
 		if (abfrageexisttabelle ("ROUTE") == 0) {
 						sql = "CREATE TABLE ROUTE (ROUTENID INT, POSITION INT, PUNKTID INT, PRIMARY KEY(ROUTENID, POSITION))";
@@ -106,30 +106,30 @@ public class Database {
 			Debug.Log("ROUTE Exists");
 		}
 
-		deleteTabelle ("PARKPLATZ");
+		//deleteTabelle ("PARKPLATZ");
 
 		if (abfrageexisttabelle ("PARKPLATZ") == 0) {
-			sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT AUTOINCREMENT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), PRIMARY KEY(PARKPLATZNUMMER))";
+			sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), PRIMARY KEY(PARKPLATZNUMMER))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
 			Debug.Log("PARKPLATZ Exists");
 		}
 
-		deleteTabelle ("DRONEN");
+		//deleteTabelle ("DRONEN");
 
 		if (abfrageexisttabelle ("DRONEN") == 0) {
-			sql = "CREATE TABLE DRONEN (ID INT AUTOINCREMENT, AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,  PRIMARY KEY(ID))";
+			sql = "CREATE TABLE DRONEN (ID INT, AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,  PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
 			Debug.Log("DRONEN Exists");
 		}
 
-		deleteTabelle ("AUTOS");
+		//deleteTabelle ("AUTOS");
 		
 		if (abfrageexisttabelle ("AUTOS") == 0) {
-			sql = "CREATE TABLE AUTOS (ID INT AUTOINCREMENT, KENNZEICHEN VARCHAR(15), STATUS INT,  PRIMARY KEY(ID))";
+			sql = "CREATE TABLE AUTOS (ID INT, KENNZEICHEN VARCHAR(15), STATUS INT,  PRIMARY KEY(ID))";
 			_command.CommandText = sql;
 			_command.ExecuteNonQuery();
 		} else {
