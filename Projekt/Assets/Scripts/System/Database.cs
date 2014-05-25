@@ -46,6 +46,8 @@ public class Database {
 		//_connection = null;
 		this.createDatabase ();
 
+
+
 	}
 	
 	// Update is called once per frame
@@ -67,7 +69,170 @@ public class Database {
 		Debug.Log (_reader ["Count"]);
 		return System.Convert.ToInt32(_reader["Count"]);
 
+
 	}
+
+	public void filltableParkplatz(){
+		Debug.Log ("fillPArk");
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection.Open();
+		sql = " Delete From PARKPLATZ";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+
+		_connection.Close ();
+
+			Parkplatz park = new Parkplatz ();
+		park.setROUTENID ("1"); park.setPARKPLATZNUMMER("1");park.setXKOORD ("-6.37327");park.setZKOORD ("-19.48297");this.addParkPlatz (park);
+		park.setROUTENID ("2"); park.setPARKPLATZNUMMER("2");park.setXKOORD ("-6.37327");park.setZKOORD ("-18.87943");this.addParkPlatz (park);
+
+
+	}
+
+	void addParkPlatz(Parkplatz park){
+
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection .Open();
+		sql = "INSERT INTO PARKPLATZ (PARKPLATZNUMMER, ROUTENID, FREI, KENNZEICHENFAHRZEUG, XKOORD, YKOORD) Values ("+park.getPARKPLATZNUMMER()+","+park.getROUTENID()+", 1,0,"+park.getX()+","+park.getY()+")";
+		_command.CommandText = sql;
+		_command.ExecuteReader();
+
+		_command.Dispose ();
+		_connection.Close ();
+		Debug.Log ("Parkplatz NR. " + park.getPARKPLATZNUMMER () + " ; RoutenID " + park.getROUTENID());
+	}
+
+	void addTypforPunkt(TypPunkte typen){
+		
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection .Open();
+		sql = "INSERT INTO TYPPUNKTE (ID, TYPBEZEICHNUNG) Values ("+typen.getID()+",'"+typen.getTypBezeichnung()+"')";
+		_command.CommandText = sql;
+		_command.ExecuteReader();
+		
+		_command.Dispose ();
+		_connection.Close ();
+		Debug.Log ("TypID " + typen.getID()+ " ; TypBezeichnung " + typen.getTypBezeichnung());
+	}
+
+	public void fillTypPunkt(){
+		Debug.Log ("fillTypPunkte");
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection.Open();
+		sql = " Delete From Routenpunkte";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+		
+		_connection.Close ();
+
+		TypPunkte typen = new TypPunkte ();
+		typen.setID ("1"); typen.setTypbezeichnung ("Abzweigung"); this.addTypforPunkt (typen);
+		typen.setID ("2"); typen.setTypbezeichnung ("ParkPlatzFront"); this.addTypforPunkt (typen);
+		typen.setID ("3"); typen.setTypbezeichnung ("Parkplatz"); this.addTypforPunkt (typen);
+		typen.setID ("4"); typen.setTypbezeichnung ("Start"); this.addTypforPunkt (typen);
+	}
+
+	void addRoutenPunkte(RoutenPunkte punkte){
+		
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection .Open();
+		sql = "INSERT INTO Routenpunkte (ID, Knotenname, XKOORD, ZKOORD, TYPID) Values ("+punkte.getID()+",'"+punkte.getKnotenname()+"',"+punkte.getX()+","+punkte.getZ()+","+punkte.getTYPID()+")";
+		_command.CommandText = sql;
+		_command.ExecuteReader();
+		
+		_command.Dispose ();
+		_connection.Close ();
+		Debug.Log ("KnotenID " + punkte.getID() + " ; KnotenName " + punkte.getKnotenname()+" ; XKOORD: "+punkte.getX()+" ; ZKOORD: "+punkte.getZ());
+	}
+
+	public void filltableRoutenPunkte(){
+		Debug.Log ("RoutePoints");
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection.Open();
+		sql = " Delete From Routenpunkte";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+		
+		_connection.Close ();
+
+		RoutenPunkte Punkt = new RoutenPunkte ();
+
+		Punkt.setID ("1");Punkt.setKNOTENNAME ("FirstKnot");Punkt.setX ("-5.31386"); Punkt.setZ ("-11.65559");Punkt.setTYPID("1");this.addRoutenPunkte (Punkt);
+
+		Punkt.setID ("2");Punkt.setKNOTENNAME ("FrontPK1");Punkt.setX ("-5.31386"); Punkt.setZ ("-19.48297");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("3");Punkt.setKNOTENNAME ("PK1");Punkt.setX ("-6.37327"); Punkt.setZ ("-19.48297");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("4");Punkt.setKNOTENNAME ("FrontPK2");Punkt.setX ("-5.31386"); Punkt.setZ ("-18.87943");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("5");Punkt.setKNOTENNAME ("PK2");Punkt.setX ("-6.37327"); Punkt.setZ ("-18.87943");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("6");Punkt.setKNOTENNAME ("FrontPK3");Punkt.setX ("-5.31386"); Punkt.setZ ("-18.20297");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("7");Punkt.setKNOTENNAME ("PK3");Punkt.setX ("-6.37327"); Punkt.setZ ("-18.20297");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("8");Punkt.setKNOTENNAME ("FrontPK4-PK5");Punkt.setX ("-5.31386"); Punkt.setZ ("-17.58915");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("9");Punkt.setKNOTENNAME ("PK4");Punkt.setX ("-6.37327"); Punkt.setZ ("-17.58915");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("10");Punkt.setKNOTENNAME ("PK5");Punkt.setX ("-3.698879"); Punkt.setZ ("-17.58915");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("11");Punkt.setKNOTENNAME ("FrontPK6-PK7");Punkt.setX ("-5.31386"); Punkt.setZ ("-16.93814");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("12");Punkt.setKNOTENNAME ("PK6");Punkt.setX ("-6.37327"); Punkt.setZ ("-16.93814");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("13");Punkt.setKNOTENNAME ("PK7");Punkt.setX ("-3.698879"); Punkt.setZ ("-16.93814");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("14");Punkt.setKNOTENNAME ("FrontPK8-PK9");Punkt.setX ("-5.31386"); Punkt.setZ ("-16.28712");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("15");Punkt.setKNOTENNAME ("PK8");Punkt.setX ("-6.37327"); Punkt.setZ ("-16.28712");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("16");Punkt.setKNOTENNAME ("PK9");Punkt.setX ("-3.698879"); Punkt.setZ ("-16.28712");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("17");Punkt.setKNOTENNAME ("FrontPK10-PK11");Punkt.setX ("-5.31386"); Punkt.setZ ("-15.6175");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("18");Punkt.setKNOTENNAME ("PK10");Punkt.setX ("-6.37327"); Punkt.setZ ("-15.6175");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("19");Punkt.setKNOTENNAME ("PK11");Punkt.setX ("-3.698879"); Punkt.setZ ("-15.6175");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("20");Punkt.setKNOTENNAME ("FrontPK12-PK13");Punkt.setX ("-5.31386"); Punkt.setZ ("-14.98962");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("21");Punkt.setKNOTENNAME ("PK12");Punkt.setX ("-6.37327"); Punkt.setZ ("-14.98962");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("22");Punkt.setKNOTENNAME ("PK13");Punkt.setX ("-3.698879"); Punkt.setZ ("-14.98962");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("23");Punkt.setKNOTENNAME ("FrontPK14-PK15");Punkt.setX ("-5.31386"); Punkt.setZ ("-14.35225");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("24");Punkt.setKNOTENNAME ("PK14");Punkt.setX ("-6.37327"); Punkt.setZ ("-14.35225");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("25");Punkt.setKNOTENNAME ("PK15");Punkt.setX ("-3.698879"); Punkt.setZ ("-14.35225");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("26");Punkt.setKNOTENNAME ("FrontPK16-PK17");Punkt.setX ("-5.31386"); Punkt.setZ ("-13.71087");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("27");Punkt.setKNOTENNAME ("PK16");Punkt.setX ("-6.37327"); Punkt.setZ ("-13.71087");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("28");Punkt.setKNOTENNAME ("PK17");Punkt.setX ("-3.698879"); Punkt.setZ ("-13.71087");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("29");Punkt.setKNOTENNAME ("FrontPK18-PK19");Punkt.setX ("-5.31386"); Punkt.setZ ("-13.06949");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("30");Punkt.setKNOTENNAME ("PK18");Punkt.setX ("-6.37327"); Punkt.setZ ("-13.06949");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("31");Punkt.setKNOTENNAME ("PK19");Punkt.setX ("-3.698879"); Punkt.setZ ("-13.06949");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+
+		Punkt.setID ("32");Punkt.setKNOTENNAME ("SecondKnot");Punkt.setX ("-0.8945427"); Punkt.setZ ("-11.58572");Punkt.setTYPID("1");this.addRoutenPunkte (Punkt);
+
+		Punkt.setID ("33");Punkt.setKNOTENNAME ("FrontPK20");Punkt.setX ("-0.8945427"); Punkt.setZ ("-17.57712");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("34");Punkt.setKNOTENNAME ("PK20");Punkt.setX ("-1.8369"); Punkt.setZ ("-17.57712");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("35");Punkt.setKNOTENNAME ("FrontPK21-PK22");Punkt.setX ("-0.8945427"); Punkt.setZ ("-16.93082");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("36");Punkt.setKNOTENNAME ("PK21");Punkt.setX ("-1.8369"); Punkt.setZ ("-16.93082");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("37");Punkt.setKNOTENNAME ("PK22");Punkt.setX ("0.8356519"); Punkt.setZ ("-16.93082");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("38");Punkt.setKNOTENNAME ("FrontPK23-PK24");Punkt.setX ("-0.8945427"); Punkt.setZ ("-16.30198");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("39");Punkt.setKNOTENNAME ("PK23");Punkt.setX ("-1.8369"); Punkt.setZ ("-16.30198");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("40");Punkt.setKNOTENNAME ("PK24");Punkt.setX ("0.8356519"); Punkt.setZ ("-16.30198");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("41");Punkt.setKNOTENNAME ("FrontPK25-PK26");Punkt.setX ("-0.8945427"); Punkt.setZ ("-15.63583");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("42");Punkt.setKNOTENNAME ("PK25");Punkt.setX ("-1.8369"); Punkt.setZ ("-15.63583");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("43");Punkt.setKNOTENNAME ("PK26");Punkt.setX ("0.8356519"); Punkt.setZ ("-15.63583");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("44");Punkt.setKNOTENNAME ("FrontPK27-PK28");Punkt.setX ("-0.8945427"); Punkt.setZ ("-14.97135");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("45");Punkt.setKNOTENNAME ("PK27");Punkt.setX ("-1.8369"); Punkt.setZ ("-14.97135");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("46");Punkt.setKNOTENNAME ("PK28");Punkt.setX ("0.8356519"); Punkt.setZ ("-14.97135");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("47");Punkt.setKNOTENNAME ("FrontPK29-PK30");Punkt.setX ("-0.8945427"); Punkt.setZ ("-14.36225");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("48");Punkt.setKNOTENNAME ("PK29");Punkt.setX ("-1.8369"); Punkt.setZ ("-14.36225");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("49");Punkt.setKNOTENNAME ("PK30");Punkt.setX ("0.8356519"); Punkt.setZ ("-14.36225");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("50");Punkt.setKNOTENNAME ("FrontPK31-PK32");Punkt.setX ("-0.8945427"); Punkt.setZ ("-13.71623");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("51");Punkt.setKNOTENNAME ("PK31");Punkt.setX ("-1.8369"); Punkt.setZ ("-13.71623");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("52");Punkt.setKNOTENNAME ("PK32");Punkt.setX ("0.8356519"); Punkt.setZ ("-13.71623");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("53");Punkt.setKNOTENNAME ("FrontPK33-PK34");Punkt.setX ("-0.8945427"); Punkt.setZ ("-13.08867");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("54");Punkt.setKNOTENNAME ("PK33");Punkt.setX ("-1.8369"); Punkt.setZ ("-13.08867");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("55");Punkt.setKNOTENNAME ("PK34");Punkt.setX ("0.8356519"); Punkt.setZ ("-13.08867");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+	
+		Punkt.setID ("56");Punkt.setKNOTENNAME ("ThirdKnot");Punkt.setX ("3.582275"); Punkt.setZ ("-11.58572");Punkt.setTYPID("1");this.addRoutenPunkte (Punkt);
+
+
+	}
+
 	public void createDatabase(){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -79,7 +244,7 @@ public class Database {
 		//deleteTabelle ("Routenpunkte");
 
 		if (abfrageexisttabelle ("Routenpunkte") == 0) {
-			sql = "CREATE TABLE Routenpunkte (ID INT , Knotenname VARCHAR(55), XKOORD INT, YKOORD INT, TYPID INT, PRIMARY KEY(ID))";
+			sql = "CREATE TABLE Routenpunkte (ID INT , Knotenname VARCHAR(55), XKOORD FLOAT, ZKOORD FLOAT, TYPID INT, PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery ();
 				} else {
@@ -106,10 +271,10 @@ public class Database {
 			Debug.Log("ROUTE Exists");
 		}
 
-		//deleteTabelle ("PARKPLATZ");
+		deleteTabelle ("PARKPLATZ");
 
 		if (abfrageexisttabelle ("PARKPLATZ") == 0) {
-			sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), PRIMARY KEY(PARKPLATZNUMMER))";
+			sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), XKOORD FLOAT, ZKOORD FLOAT, PRIMARY KEY(PARKPLATZNUMMER))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
@@ -127,7 +292,7 @@ public class Database {
 		}
 
 		//deleteTabelle ("AUTOS");
-		
+
 		if (abfrageexisttabelle ("AUTOS") == 0) {
 			sql = "CREATE TABLE AUTOS (ID INT, KENNZEICHEN VARCHAR(15), STATUS INT,  PRIMARY KEY(ID))";
 			_command.CommandText = sql;
@@ -146,7 +311,7 @@ public class Database {
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection .Open();
-		sql = "DROP TABLE "+Tabelle+" ";
+		sql = "DROP TABLE IF EXISTS "+Tabelle+" ";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 

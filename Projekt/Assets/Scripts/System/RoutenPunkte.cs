@@ -4,8 +4,8 @@ using System.Collections;
 public class RoutenPunkte  {
 	int ID;
 	string Knotenname;
-	int X;
-	int Y;
+	float X;
+	float Z;
 	int TYPID;
 
 	public void setID(string Nummer){
@@ -13,11 +13,11 @@ public class RoutenPunkte  {
 	}
 
 	public void setX(string Nummer){
-		this.X = System.Convert.ToInt32(Nummer);
+		this.X = System.Convert.ToSingle(Nummer);
 	}
 
-	public void setY(string Nummer){
-		this.Y = System.Convert.ToInt32(Nummer);
+	public void setZ(string Nummer){
+		this.Z = System.Convert.ToSingle(Nummer);
 	}
 
 	public void setTYPID(string Nummer){
@@ -32,19 +32,19 @@ public class RoutenPunkte  {
 		return this.ID;
 	}
 	
-	public int getX(){
+	public float getX(){
 		return this.X;
 	}
 
-	public int getY(){
-		return this.Y;
+	public float getZ(){
+		return this.Z;
 	}
 
 	public int getTYPID(){
 		return this.TYPID;
 	}
 	
-	public string geKnotenname(){
+	public string getKnotenname(){
 		return this.Knotenname;
 	}
 

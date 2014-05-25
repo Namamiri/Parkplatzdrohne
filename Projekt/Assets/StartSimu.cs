@@ -8,6 +8,7 @@ public class StartSimu : MonoBehaviour {
 	void Start () {
 		Database datenbank = new Database ();
 		datenbank.createDatabase ();
+		datenbank.filltableParkplatz ();
 		//this.Cars.Add(CreateCar.fromPrefab ());
 		this.Cars.Add(CreateCar.fromfbx ());
 		this.Cars.Add (CreateCar.onstartpoint());

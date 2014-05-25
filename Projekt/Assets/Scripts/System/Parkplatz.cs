@@ -7,6 +7,8 @@ public class Parkplatz  {
 	int ROUTENID;
 	int FREI;
 	string KENNZEICHENFAHRZEUG;
+	float XKOORD;
+	float ZKOORD;
 
 	public void setPARKPLATZNUMMER(string Nummer){
 		this.PARKPLATZNUMMER = System.Convert.ToInt32(Nummer);
@@ -14,6 +16,13 @@ public class Parkplatz  {
 
 	public void setROUTENID(string Nummer){
 		this.ROUTENID = System.Convert.ToInt32(Nummer);
+	}
+
+	public void setXKOORD(string Nummer){
+		this.XKOORD = System.Convert.ToSingle(Nummer);
+	}
+	public void setZKOORD(string Nummer){
+		this.ZKOORD = System.Convert.ToSingle(Nummer);
 	}
 
 	public void setFREI(string Nummer){
@@ -28,15 +37,23 @@ public class Parkplatz  {
 		return this.PARKPLATZNUMMER;
 	}
 	
-	public int setROUTENID(){
+	public int getROUTENID(){
 		return this.ROUTENID;
 	}
 	
-	public int setFREI(){
+	public int getFREI(){
 		return this.FREI;
 	}
+
+	public float getX(){
+		return this.XKOORD;
+	}
+
+	public float getY(){
+		return this.ZKOORD;
+	}
 	
-	public string setKENNZEICHEN(){
+	public string getKENNZEICHEN(){
 		return this.KENNZEICHENFAHRZEUG;
 	}
 
