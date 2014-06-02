@@ -161,13 +161,13 @@ public class Database {
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection .Open();
-		sql = "INSERT INTO ROUTE (ROUTENID, POSITION, PUNKTID) Values ("+punkte.getRoutenID+",'"+punkte.getPositionID+"',"+punkte.getKnotenID+")";
+		sql = "INSERT INTO ROUTE (ROUTENID, POSITION, PUNKTID) Values ("+punkte.getRoutenID()+",'"+punkte.getPositionID()+"',"+punkte.getKnotenID()+")";
 		_command.CommandText = sql;
 		_command.ExecuteReader();
 		
 		_command.Dispose ();
 		_connection.Close ();
-		Debug.Log ("KnotenID " + punkte.getKnotenID + " ; Position " + punkte.getPositionID+" ; RoutenID: "+punkte.getRoutenID());
+		Debug.Log ("KnotenID " + punkte.getKnotenID() + " ; Position " + punkte.getPositionID()+" ; RoutenID: "+punkte.getRoutenID());
 	}
 
 	public void filltableRoute(){
