@@ -13,30 +13,30 @@ public class bewegeAuto : MonoBehaviour {
 
 		//Auto Steuerung
 				if (Input.GetKeyDown (KeyCode.UpArrow)) {
-						gameObject.transform.Translate (1, 0, 0);
+						gameObject.transform.Translate (0.1f, 0f, 0f);
 						Debug.Log ("gerade aus");
 						//GameObject.Find("Ampel");
 
 				}
 				if (Input.GetKeyDown (KeyCode.DownArrow)) {
-						gameObject.transform.Translate (-1, 0, 0);
+						gameObject.transform.Translate (-0.1f, 0f, 0f);
 						Debug.Log ("rückwärts");
 							if (Input.GetKeyDown (KeyCode.RightArrow)) {
-									gameObject.transform.Translate (-1, 0, 0);
+									gameObject.transform.Translate (-0.1f, 0f, 0f);
 									Debug.Log ("rückwärts");
 									}
 						
 				}
 				if (Input.GetKeyDown (KeyCode.RightArrow)) {
-						gameObject.transform.Rotate(0, 8, 0);
-						gameObject.transform.Translate (1, 0, 0);
+						gameObject.transform.Rotate(0f, 8f, 0f);
+						gameObject.transform.Translate (0.1f, 0f, 0f);
 						Debug.Log("rechts");
 						
 						
 				}
 				if (Input.GetKeyDown (KeyCode.LeftArrow)) {
-						gameObject.transform.Rotate (0, -8, 0);
-						gameObject.transform.Translate (1, 0, 0);
+						gameObject.transform.Rotate (0f, -8f, 0f);
+						gameObject.transform.Translate (0.1f, 0f, 0f);
 						Debug.Log ("rechts");
 				}
 

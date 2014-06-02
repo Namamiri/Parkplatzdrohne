@@ -15,7 +15,7 @@ public class StartSimu : MonoBehaviour {
 		//this.Cars.Add(CreateCar.fromPrefab ());
 		this.Cars.Add(CreateCar.fromfbx ());
 		this.Cars.Add (CreateCar.onstartpoint());
-		TypPunkte typenPunkte = new TypPunkte ();
+		//TypPunkte typenPunkte = new TypPunkte ();
 	}
 	
 	// Update is called once per frame

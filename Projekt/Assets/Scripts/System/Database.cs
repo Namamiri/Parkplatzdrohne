@@ -127,7 +127,7 @@ public class Database {
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection.Open();
-		sql = " Delete From Routenpunkte";
+		sql = " Delete From TYPPUNKTE";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 		
@@ -176,7 +176,7 @@ public class Database {
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection.Open();
-		sql = " Delete From Routenpunkte";
+		sql = " Delete From ROUTE";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 		
