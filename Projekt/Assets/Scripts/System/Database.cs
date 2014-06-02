@@ -97,7 +97,7 @@ public class Database {
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection .Open();
-		sql = "INSERT INTO PARKPLATZ (PARKPLATZNUMMER, ROUTENID, FREI, KENNZEICHENFAHRZEUG, XKOORD, YKOORD) Values ("+park.getPARKPLATZNUMMER()+","+park.getROUTENID()+", 1,0,"+park.getX()+","+park.getY()+")";
+		sql = "INSERT INTO PARKPLATZ (PARKPLATZNUMMER, ROUTENID, FREI, KENNZEICHENFAHRZEUG, XKOORD, ZKOORD) Values ("+park.getPARKPLATZNUMMER()+","+park.getROUTENID()+", 1,0,"+park.getX()+","+park.getY()+")";
 		_command.CommandText = sql;
 		_command.ExecuteReader();
 
@@ -155,6 +155,113 @@ public class Database {
 		Debug.Log ("KnotenID " + punkte.getID() + " ; KnotenName " + punkte.getKnotenname()+" ; XKOORD: "+punkte.getX()+" ; ZKOORD: "+punkte.getZ());
 	}
 
+	void addRoute(Route punkte){
+		
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection .Open();
+		sql = "INSERT INTO ROUTE (ROUTENID, POSITION, PUNKTID) Values ("+punkte.getRoutenID+",'"+punkte.getPositionID+"',"+punkte.getKnotenID+")";
+		_command.CommandText = sql;
+		_command.ExecuteReader();
+		
+		_command.Dispose ();
+		_connection.Close ();
+		Debug.Log ("KnotenID " + punkte.getKnotenID + " ; Position " + punkte.getPositionID+" ; RoutenID: "+punkte.getRoutenID());
+	}
+
+	public void filltableRoute(){
+		Debug.Log ("RoutePoints");
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection.Open();
+		sql = " Delete From Routenpunkte";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+		
+		_connection.Close ();
+
+		Route PointstoRoute = new Route ();
+		//First Route
+		PointstoRoute.setRoutenID ("1");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("1");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("2");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("1");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("3");this.addRoute (PointstoRoute);
+		//Second Route
+		PointstoRoute.setRoutenID ("2");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("2");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("4");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("2");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("5");this.addRoute (PointstoRoute);
+		//Third Route
+		PointstoRoute.setRoutenID ("3");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("3");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("6");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("3");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("7");this.addRoute (PointstoRoute);
+		//Fourth Route
+		PointstoRoute.setRoutenID ("4");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("4");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("8");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("4");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("9");this.addRoute (PointstoRoute);
+		//Fifth Route
+		PointstoRoute.setRoutenID ("5");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("5");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("8");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("5");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("10");this.addRoute (PointstoRoute);
+		//Six Route
+		PointstoRoute.setRoutenID ("6");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("6");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("11");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("6");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("12");this.addRoute (PointstoRoute);
+		//Seven Route
+		PointstoRoute.setRoutenID ("7");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("7");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("11");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("7");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("13");this.addRoute (PointstoRoute);
+		//eight Route
+		PointstoRoute.setRoutenID ("8");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("8");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("14");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("8");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("15");this.addRoute (PointstoRoute);
+		//nine Route
+		PointstoRoute.setRoutenID ("9");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("9");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("14");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("9");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("16");this.addRoute (PointstoRoute);
+		//ten Route
+		PointstoRoute.setRoutenID ("10");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("10");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("17");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("10");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("18");this.addRoute (PointstoRoute);
+		//eleven Route
+		PointstoRoute.setRoutenID ("11");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("11");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("17");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("11");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("19");this.addRoute (PointstoRoute);
+		//12 Route
+		PointstoRoute.setRoutenID ("12");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("12");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("20");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("12");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("21");this.addRoute (PointstoRoute);
+		//13 Route
+		PointstoRoute.setRoutenID ("13");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("13");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("20");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("13");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("22");this.addRoute (PointstoRoute);
+		//14 Route
+		PointstoRoute.setRoutenID ("14");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("14");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("23");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("14");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("24");this.addRoute (PointstoRoute);
+		//15 Route
+		PointstoRoute.setRoutenID ("15");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("15");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("23");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("15");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("25");this.addRoute (PointstoRoute);
+		//16 Route
+		PointstoRoute.setRoutenID ("16");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("16");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("26");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("16");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("27");this.addRoute (PointstoRoute);
+		//17 Route
+		PointstoRoute.setRoutenID ("17");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("17");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("26");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("17");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("28");this.addRoute (PointstoRoute);
+		//18 Route
+		PointstoRoute.setRoutenID ("18");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("18");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("29");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("18");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("30");this.addRoute (PointstoRoute);
+		//19 Route
+		PointstoRoute.setRoutenID ("19");PointstoRoute.setPositionID ("1");PointstoRoute.setKnotenID ("1");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("19");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("29");this.addRoute (PointstoRoute);
+		PointstoRoute.setRoutenID ("19");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("31");this.addRoute (PointstoRoute);
+
+
+	}
 	public void filltableRoutenPunkte(){
 		Debug.Log ("RoutePoints");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -169,7 +276,7 @@ public class Database {
 
 		RoutenPunkte Punkt = new RoutenPunkte ();
 
-		Punkt.setID ("1");Punkt.setKNOTENNAME ("FirstKnot");Punkt.setX ("-5.31386"); Punkt.setZ ("-11.65559");Punkt.setTYPID("1");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("1");Punkt.setKNOTENNAME ("FirstKnotR");Punkt.setX ("-5.31386"); Punkt.setZ ("-11.65559");Punkt.setTYPID("1");this.addRoutenPunkte (Punkt);
 
 		Punkt.setID ("2");Punkt.setKNOTENNAME ("FrontPK1");Punkt.setX ("-5.31386"); Punkt.setZ ("-19.48297");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
 		Punkt.setID ("3");Punkt.setKNOTENNAME ("PK1");Punkt.setX ("-6.37327"); Punkt.setZ ("-19.48297");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
@@ -201,6 +308,27 @@ public class Database {
 		Punkt.setID ("29");Punkt.setKNOTENNAME ("FrontPK18-PK19");Punkt.setX ("-5.31386"); Punkt.setZ ("-13.06949");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
 		Punkt.setID ("30");Punkt.setKNOTENNAME ("PK18");Punkt.setX ("-6.37327"); Punkt.setZ ("-13.06949");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
 		Punkt.setID ("31");Punkt.setKNOTENNAME ("PK19");Punkt.setX ("-3.698879"); Punkt.setZ ("-13.06949");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+
+		Punkt.setID ("57");Punkt.setKNOTENNAME ("FirstKnotL");Punkt.setX ("-4.642091"); Punkt.setZ ("-10.48455");Punkt.setTYPID("1");this.addRoutenPunkte (Punkt);
+
+		Punkt.setID ("58");Punkt.setKNOTENNAME ("FrontPK35-PK36");Punkt.setX ("-4.642091"); Punkt.setZ ("-9.18896");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("59");Punkt.setKNOTENNAME ("PK35");Punkt.setX ("-3.707438"); Punkt.setZ ("-9.18896");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("60");Punkt.setKNOTENNAME ("PK36");Punkt.setX ("-6.395954"); Punkt.setZ ("-9.18896");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("61");Punkt.setKNOTENNAME ("FrontPK37-PK38");Punkt.setX ("-4.642091"); Punkt.setZ ("-8.533358");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("62");Punkt.setKNOTENNAME ("PK37");Punkt.setX ("-3.707438"); Punkt.setZ ("-8.533358");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("63");Punkt.setKNOTENNAME ("PK38");Punkt.setX ("-6.395954"); Punkt.setZ ("-8.533358");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("64");Punkt.setKNOTENNAME ("FrontPK39-PK40");Punkt.setX ("-4.642091"); Punkt.setZ ("-7.890867");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("65");Punkt.setKNOTENNAME ("PK39");Punkt.setX ("-3.707438"); Punkt.setZ ("-7.890867");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("66");Punkt.setKNOTENNAME ("PK40");Punkt.setX ("-6.395954"); Punkt.setZ ("-7.890867");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("67");Punkt.setKNOTENNAME ("FrontPK41-PK42");Punkt.setX ("-4.642091"); Punkt.setZ ("-7.261488");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("68");Punkt.setKNOTENNAME ("PK41");Punkt.setX ("-3.707438"); Punkt.setZ ("-7.261488");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("69");Punkt.setKNOTENNAME ("PK42");Punkt.setX ("-6.395954"); Punkt.setZ ("-7.261488");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("70");Punkt.setKNOTENNAME ("FrontPK43-PK44");Punkt.setX ("-4.642091"); Punkt.setZ ("-6.632109");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("71");Punkt.setKNOTENNAME ("PK43");Punkt.setX ("-3.707438"); Punkt.setZ ("-6.632109");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("72");Punkt.setKNOTENNAME ("PK44");Punkt.setX ("-6.395954"); Punkt.setZ ("-6.632109");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("73");Punkt.setKNOTENNAME ("FrontPK45-PK46");Punkt.setX ("-4.642091"); Punkt.setZ ("-5.989618");Punkt.setTYPID("2");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("74");Punkt.setKNOTENNAME ("PK45");Punkt.setX ("-3.707438"); Punkt.setZ ("-5.989618");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
+		Punkt.setID ("75");Punkt.setKNOTENNAME ("PK46");Punkt.setX ("-6.395954"); Punkt.setZ ("-5.989618");Punkt.setTYPID("3");this.addRoutenPunkte (Punkt);
 
 		Punkt.setID ("32");Punkt.setKNOTENNAME ("SecondKnot");Punkt.setX ("-0.8945427"); Punkt.setZ ("-11.58572");Punkt.setTYPID("1");this.addRoutenPunkte (Punkt);
 
