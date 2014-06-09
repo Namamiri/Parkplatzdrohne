@@ -170,6 +170,97 @@ public class Database {
 		Debug.Log ("KnotenID " + punkte.getKnotenID() + " ; Position " + punkte.getPositionID()+" ; RoutenID: "+punkte.getRoutenID());
 	}
 
+	public Autos getAutoViaKennzeichen(String Kennzeichen){
+
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM AUTOS WHERE KENNZEICHEN='"+Kennzeichen+"' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+
+		Autos auto = new Autos ();
+		_reader.Read ();
+		auto.setID(_reader["ID"] as String);
+		auto.setKennzeichen (_reader ["KENNZEICHEN"]as String);
+		auto.setStatus (_reader ["STATUS"] as String);
+		_command.Dispose ();
+		_connection.Close ();
+		return auto;
+
+		}
+
+	public Parkplatz getParkplatzViaKennzeichen (String Kennzeichen){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM PARKPLATZ WHERE KENNZEICHENFAHRZEUG='"+Kennzeichen+"' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+
+		Parkplatz parkplatz = new Parkplatz ();
+		_reader.Read ();
+		parkplatz.setFREI(_reader["FREI"] as String);
+		parkplatz.setPARKPLATZNUMMER(_reader["PARKPLATZNUMMER"] as String);
+		parkplatz.setROUTENID(_reader["ROUTENID"] as String);
+		parkplatz.setKENNZEICHEN(_reader["KENNZEICHENFAHRZEUG"] as String);
+		parkplatz.setXKOORD(_reader["XKOORD"] as String);
+		parkplatz.setZKOORD(_reader["ZKOORD"] as String);
+
+		_command.Dispose ();
+		_connection.Close ();
+		return parkplatz;
+		}
+
+	public RouteContainer getRouteViaROUTEID (String RouteID){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM Route WHERE ROUTENID='"+RouteID+"' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		RouteContainer container=new RouteContainer();
+		while (_reader.Read()){
+			Route Routeelement=new Route();
+			Routeelement.setRoutenID(_reader["ROUTENID"] as String);
+			Routeelement.setPositionID(_reader["POSITION"] as String);
+			Routeelement.setKnotenID(_reader["PUNKTID"] as String);
+			container.addRoute(Routeelement);
+		}
+		_command.Dispose ();
+		_connection.Close ();
+
+		return container;
+		}
+
+	public RoutenPunkte getRoutePointViaID(String ID){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM Routenpunkte WHERE ID='"+ID+"' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		RoutenPunkte point=new RoutenPunkte();
+		_reader.Read ();
+		point.setID(_reader["ID"] as String);
+		point.setKNOTENNAME(_reader["Knotenname"] as String);
+		point.setTYPID(_reader["TYPID"] as String);
+		point.setX(_reader["XKOORD"] as String);
+		point.setZ(_reader["ZKOORD"] as String);
+		_command.Dispose ();
+		_connection.Close ();
+		return point;
+
+		}
+
 	public void filltableRoute(){
 		Debug.Log ("RoutePoints");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -464,7 +555,8 @@ public class Database {
 			platz.setFREI(_reader["FREI"] as String);
 			platz.setKENNZEICHEN(_reader["KENNZEICHENFAHRZEUG"] as String);
 			platz.setROUTENID(_reader["ROUTENID"] as String);
-
+			platz.setXKOORD(_reader["XKOORD"] as String);
+			platz.setZKOORD(_reader["ZKOORD"] as String);
 			Liste.Add(platz);
 
 				};
