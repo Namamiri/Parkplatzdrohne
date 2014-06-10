@@ -51,7 +51,7 @@ public class CreateCar : MonoBehaviour {
 		int NumberoffreePArkplatz = manageDatabase.getanzahlfreeparkplaetze ();
 
 		int anzahlrandomCars = Random.Range (1, NumberoffreePArkplatz / 2);
-		for (int i=0; i<5; i++) {
+		for (int i=0; i<anzahlrandomCars; i++) {
 			GameObject Car;
 			Car = Instantiate(Resources.Load("auto")) as GameObject;
 			string naming = "LP";
