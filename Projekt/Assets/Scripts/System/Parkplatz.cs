@@ -21,6 +21,7 @@ public class Parkplatz  {
 	public void setXKOORD(string Nummer){
 		this.XKOORD = System.Convert.ToSingle(Nummer);
 	}
+
 	public void setZKOORD(string Nummer){
 		this.ZKOORD = System.Convert.ToSingle(Nummer);
 	}
@@ -32,6 +33,8 @@ public class Parkplatz  {
 	public void setKENNZEICHEN(string Nummer){
 		this.KENNZEICHENFAHRZEUG = Nummer;
 	}
+
+
 
 	public int getPARKPLATZNUMMER(){
 		return this.PARKPLATZNUMMER;
@@ -49,7 +52,7 @@ public class Parkplatz  {
 		return this.XKOORD;
 	}
 
-	public float getY(){
+	public float getZ(){
 		return this.ZKOORD;
 	}
 	

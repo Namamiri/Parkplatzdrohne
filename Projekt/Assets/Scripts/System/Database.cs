@@ -5,7 +5,7 @@ using Mono.Data.SqliteClient;
 using System;
 using System.Collections.Generic;
 
-[ExecuteInEditMode()]  
+  
 public class Database {
 	string _strDBName = "URI=file:MasterSQLite.db";
 
@@ -66,14 +66,30 @@ public class Database {
 		_connection .Close();
 		_connection = null;
 		_reader.Close();
-		Debug.Log (_reader ["Count"]);
+
 		return System.Convert.ToInt32(_reader["Count"]);
 
 
 	}
+	public int getanzahlfreeparkplaetze (){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT count(PARKPLATZNUMMER) as Count FROM PARKPLATZ WHERE FREI='1' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		_reader.Read ();
+		_connection .Close();
+		_connection = null;
+		int wert = System.Convert.ToInt32(_reader ["Count"]);
+		_reader.Close();
+		return wert;
 
+		}
 	public void filltableParkplatz(){
-		Debug.Log ("fillPArk");
+
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
@@ -84,11 +100,39 @@ public class Database {
 
 		_connection.Close ();
 
-			Parkplatz park = new Parkplatz ();
-		park.setROUTENID ("1"); park.setPARKPLATZNUMMER("1");park.setXKOORD ("-6.37327");park.setZKOORD ("-19.48297");this.addParkPlatz (park);
-		park.setROUTENID ("2"); park.setPARKPLATZNUMMER("2");park.setXKOORD ("-6.37327");park.setZKOORD ("-18.87943");this.addParkPlatz (park);
+		Parkplatz park = new Parkplatz ();
 
+		for (int i=1; i<=46; i++) {
+			String iasStr=System.Convert.ToString(i);
+			RoutenPunkte Point= this.getRoutePointPKviaNumber(iasStr);
+			park.setROUTENID (iasStr);park.setPARKPLATZNUMMER (iasStr);park.setXKOORD (System.Convert.ToString(Point.getX()));park.setZKOORD (System.Convert.ToString(Point.getZ()));this.addParkPlatz (park);
+		}
 
+	}
+
+	public RoutenPunkte getRoutePointPKviaNumber(String ID){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM Routenpunkte WHERE Knotenname='PK"+ID+"' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		RoutenPunkte point=new RoutenPunkte();
+		_reader.Read ();
+		point.setID(System.Convert.ToString(_reader["ID"]));
+		point.setKNOTENNAME(System.Convert.ToString(_reader["Knotenname"]));
+		point.setTYPID(System.Convert.ToString(_reader["TYPID"]));
+
+		point.setX(System.Convert.ToString(_reader["XKOORD"]));
+		point.setZ(System.Convert.ToString(_reader["ZKOORD"]));
+
+		_command.Dispose ();
+		_connection.Close ();
+
+		return point;
+		
 	}
 
 	void addParkPlatz(Parkplatz park){
@@ -97,13 +141,13 @@ public class Database {
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection .Open();
-		sql = "INSERT INTO PARKPLATZ (PARKPLATZNUMMER, ROUTENID, FREI, KENNZEICHENFAHRZEUG, XKOORD, ZKOORD) Values ("+park.getPARKPLATZNUMMER()+","+park.getROUTENID()+", 1,0,"+park.getX()+","+park.getY()+")";
+		sql = "INSERT INTO PARKPLATZ (PARKPLATZNUMMER, ROUTENID, FREI, KENNZEICHENFAHRZEUG, XKOORD, ZKOORD) Values ("+park.getPARKPLATZNUMMER()+","+park.getROUTENID()+", 1,0,"+park.getX()+","+park.getZ()+")";
 		_command.CommandText = sql;
 		_command.ExecuteReader();
 
 		_command.Dispose ();
 		_connection.Close ();
-		Debug.Log ("Parkplatz NR. " + park.getPARKPLATZNUMMER () + " ; RoutenID " + park.getROUTENID());
+
 	}
 
 	void addTypforPunkt(TypPunkte typen){
@@ -118,7 +162,7 @@ public class Database {
 		
 		_command.Dispose ();
 		_connection.Close ();
-		Debug.Log ("TypID " + typen.getID()+ " ; TypBezeichnung " + typen.getTypBezeichnung());
+
 	}
 
 	public void fillTypPunkt(){
@@ -183,9 +227,9 @@ public class Database {
 
 		Autos auto = new Autos ();
 		_reader.Read ();
-		auto.setID(_reader["ID"] as String);
-		auto.setKennzeichen (_reader ["KENNZEICHEN"]as String);
-		auto.setStatus (_reader ["STATUS"] as String);
+		auto.setID(System.Convert.ToString(_reader["ID"]));
+		auto.setKennzeichen (System.Convert.ToString(_reader ["KENNZEICHEN"]));
+		auto.setStatus (System.Convert.ToString(_reader ["STATUS"]));
 		_command.Dispose ();
 		_connection.Close ();
 		return auto;
@@ -204,12 +248,12 @@ public class Database {
 
 		Parkplatz parkplatz = new Parkplatz ();
 		_reader.Read ();
-		parkplatz.setFREI(_reader["FREI"] as String);
-		parkplatz.setPARKPLATZNUMMER(_reader["PARKPLATZNUMMER"] as String);
-		parkplatz.setROUTENID(_reader["ROUTENID"] as String);
-		parkplatz.setKENNZEICHEN(_reader["KENNZEICHENFAHRZEUG"] as String);
-		parkplatz.setXKOORD(_reader["XKOORD"] as String);
-		parkplatz.setZKOORD(_reader["ZKOORD"] as String);
+		parkplatz.setFREI(System.Convert.ToString(_reader["FREI"]));
+		parkplatz.setPARKPLATZNUMMER(System.Convert.ToString(_reader["PARKPLATZNUMMER"]));
+		parkplatz.setROUTENID(System.Convert.ToString(_reader["ROUTENID"]));
+		parkplatz.setKENNZEICHEN(System.Convert.ToString(_reader["KENNZEICHENFAHRZEUG"]));
+		parkplatz.setXKOORD(System.Convert.ToString(_reader["XKOORD"]));
+		parkplatz.setZKOORD(System.Convert.ToString(_reader["ZKOORD"]));
 
 		_command.Dispose ();
 		_connection.Close ();
@@ -228,9 +272,9 @@ public class Database {
 		RouteContainer container=new RouteContainer();
 		while (_reader.Read()){
 			Route Routeelement=new Route();
-			Routeelement.setRoutenID(_reader["ROUTENID"] as String);
-			Routeelement.setPositionID(_reader["POSITION"] as String);
-			Routeelement.setKnotenID(_reader["PUNKTID"] as String);
+			Routeelement.setRoutenID(System.Convert.ToString(_reader["ROUTENID"]));
+			Routeelement.setPositionID(System.Convert.ToString(_reader["POSITION"]));
+			Routeelement.setKnotenID(System.Convert.ToString(_reader["PUNKTID"]));
 			container.addRoute(Routeelement);
 		}
 		_command.Dispose ();
@@ -250,11 +294,11 @@ public class Database {
 		_reader = _command.ExecuteReader();
 		RoutenPunkte point=new RoutenPunkte();
 		_reader.Read ();
-		point.setID(_reader["ID"] as String);
-		point.setKNOTENNAME(_reader["Knotenname"] as String);
-		point.setTYPID(_reader["TYPID"] as String);
-		point.setX(_reader["XKOORD"] as String);
-		point.setZ(_reader["ZKOORD"] as String);
+		point.setID(System.Convert.ToString(_reader["ID"]));
+		point.setKNOTENNAME(System.Convert.ToString(_reader["Knotenname"]));
+		point.setTYPID(System.Convert.ToString(_reader["TYPID"]));
+		point.setX(System.Convert.ToString(_reader["XKOORD"]));
+		point.setZ(System.Convert.ToString(_reader["ZKOORD"]));
 		_command.Dispose ();
 		_connection.Close ();
 		return point;
@@ -551,12 +595,12 @@ public class Database {
 		List<Parkplatz> Liste= new List<Parkplatz> ();
 		while (_reader.Read ()) {
 			Parkplatz platz=new Parkplatz();
-			platz.setPARKPLATZNUMMER(_reader["PARKPLATZNUMMER"] as String);
-			platz.setFREI(_reader["FREI"] as String);
-			platz.setKENNZEICHEN(_reader["KENNZEICHENFAHRZEUG"] as String);
-			platz.setROUTENID(_reader["ROUTENID"] as String);
-			platz.setXKOORD(_reader["XKOORD"] as String);
-			platz.setZKOORD(_reader["ZKOORD"] as String);
+			platz.setPARKPLATZNUMMER(System.Convert.ToString(_reader["PARKPLATZNUMMER"]));
+			platz.setFREI(System.Convert.ToString(_reader["FREI"]));
+			platz.setKENNZEICHEN(System.Convert.ToString(_reader["KENNZEICHENFAHRZEUG"]));
+			platz.setROUTENID(System.Convert.ToString(_reader["ROUTENID"] ));
+			platz.setXKOORD(System.Convert.ToString(_reader["XKOORD"] ));
+			platz.setZKOORD(System.Convert.ToString(_reader["ZKOORD"]));
 			Liste.Add(platz);
 
 				};
@@ -586,7 +630,20 @@ public class Database {
 		//_connection = null;
 
 		}
+	public Parkplatz getrandomfreeparkandfillwithcar(String Carname){
+		Autos auto = new Autos ();
+		auto.setKennzeichen (Carname);
+		auto.setStatus ("2");
+		this.addauto (auto);
+		List<Parkplatz> parkplaetze = this.getfreeParkplatz ();
+		int anzahlfreierParkplaetze=parkplaetze.Count;
+		Parkplatz gewaehlt;
 
+		int wohin = UnityEngine.Random.Range (0, anzahlfreierParkplaetze-1);
+		gewaehlt = parkplaetze [wohin];
+		this.setStatusbesetztParkplatz (Carname, gewaehlt);
+		return  gewaehlt;
+		}
 	public void deactivateauto(Autos autodaten){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -617,9 +674,9 @@ public class Database {
 
 		_reader.Read ();
 		Autos Auto=new Autos();
-		Auto.setID (_reader ["ID"] as String);
-		Auto.setKennzeichen(_reader ["KENNZEICHEN"] as String);
-		Auto.setStatus (_reader ["STATUS"] as String);
+		Auto.setID (System.Convert.ToString(_reader ["ID"] ));
+		Auto.setKennzeichen(System.Convert.ToString(_reader ["KENNZEICHEN"]));
+		Auto.setStatus (System.Convert.ToString(_reader ["STATUS"]));
 		
 		
 		_command.Dispose();
@@ -629,4 +686,20 @@ public class Database {
 		return Auto;
 		}
 
+	public void setStatusbesetztParkplatz(String Kennzeichen,Parkplatz pk){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		
+		_connection .Open();
+
+		sql = "UPDATE PARKPLATZ SET FREI = '0' AND KENNZEICHENFAHRZEUG ='"+Kennzeichen+"'  WHERE PARKPLATZNUMMER = "+pk.getPARKPLATZNUMMER();
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery();
+		
+		_command.Dispose();
+		//_command = null;
+		_connection .Close();
+		//_connection = null;
+		}
 }

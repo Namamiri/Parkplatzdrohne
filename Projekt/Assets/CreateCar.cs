@@ -44,4 +44,32 @@ public class CreateCar : MonoBehaviour {
 		return Car;
 		
 	}
-}
+
+	public static void randomfill(){
+
+		Database manageDatabase = new Database ();
+		int NumberoffreePArkplatz = manageDatabase.getanzahlfreeparkplaetze ();
+
+		int anzahlrandomCars = Random.Range (1, NumberoffreePArkplatz / 2);
+		for (int i=0; i<5; i++) {
+			GameObject Car;
+			Car = Instantiate(Resources.Load("auto")) as GameObject;
+			string naming = "LP";
+			naming = naming + System.Convert.ToChar(Random.Range (65, 90));
+			naming = naming + System.Convert.ToChar(Random.Range (65, 90));
+			naming = naming + Random.Range (25, 999);
+			Car.name = naming;
+			Parkplatz park= manageDatabase.getrandomfreeparkandfillwithcar(naming);
+			Car.transform.localScale= new Vector3(10,10,10);
+			Car.transform.position = new Vector3 (park.getX(),2f,park.getZ());
+			Rigidbody newrig = Car.AddComponent<Rigidbody>();
+			newrig.mass = 1f;
+			newrig.drag = 0;
+			newrig.angularDrag = 0.5f;
+			}
+	
+	}
+	
+	
+	}
+

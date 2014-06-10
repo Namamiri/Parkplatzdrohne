@@ -13,6 +13,7 @@ public class RoutenPunkte  {
 	}
 
 	public void setX(string Nummer){
+
 		this.X = System.Convert.ToSingle(Nummer);
 	}
 
