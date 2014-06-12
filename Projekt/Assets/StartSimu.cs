@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class StartSimu : MonoBehaviour {
-	List<GameObject> Cars = new List<GameObject>();
+	//List<GameObject> Cars = new List<GameObject>();
 	// Use this for initialization
 	void Start () {
 		Database datenbank = new Database ();
@@ -12,9 +12,10 @@ public class StartSimu : MonoBehaviour {
 		datenbank.fillTypPunkt ();
 		datenbank.filltableRoutenPunkte();
 		datenbank.filltableRoute ();
+
 		//this.Cars.Add(CreateCar.fromPrefab ());
 		//this.Cars.Add(CreateCar.fromfbx ());
-		this.Cars.Add (CreateCar.onstartpoint ());
+		//this.Cars.Add (CreateCar.onstartpoint ());
 		CreateCar.randomfill ();
 		//TypPunkte typenPunkte = new TypPunkte ();
 	}

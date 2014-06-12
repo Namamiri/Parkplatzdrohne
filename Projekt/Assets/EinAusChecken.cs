@@ -12,6 +12,7 @@ public class EinAusChecken : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.N)) {
 			Debug.Log("Neues Auto wurde Gedrückt");
+			Debug.Log(CreateCar.onstartpoint());
 		}
 		if (Input.GetKeyDown (KeyCode.Minus)) {
 			Debug.Log ("Auto wurde entfernt");

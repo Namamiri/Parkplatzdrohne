@@ -88,6 +88,23 @@ public class Database {
 		return wert;
 
 		}
+	public int getanzahlfreeparkplaetzelimit1 (){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT count(PARKPLATZNUMMER) as Count FROM PARKPLATZ WHERE FREI='1' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		_reader.Read ();
+		_connection .Close();
+		_connection = null;
+		int wert = System.Convert.ToInt32(_reader ["Count"]);
+		_reader.Close();
+		return wert;
+		
+	}
 	public void filltableParkplatz(){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -723,6 +740,36 @@ public class Database {
 		return Liste;
 	}
 
+	public Parkplatz getfreeParkplatzlimit1(){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT * FROM PARKPLATZ WHERE FREI=1 LIMIT 1 ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+
+		_reader.Read ();
+			Parkplatz platz=new Parkplatz();
+			platz.setPARKPLATZNUMMER(System.Convert.ToString(_reader["PARKPLATZNUMMER"]));
+			platz.setFREI(System.Convert.ToString(_reader["FREI"]));
+			platz.setKENNZEICHEN(System.Convert.ToString(_reader["KENNZEICHENFAHRZEUG"]));
+			platz.setROUTENID(System.Convert.ToString(_reader["ROUTENID"] ));
+			platz.setXKOORD(System.Convert.ToString(_reader["XKOORD"] ));
+			platz.setZKOORD(System.Convert.ToString(_reader["ZKOORD"]));
+			
+			
+	
+		
+		
+		_command.Dispose();
+		_connection .Close();
+		_connection = null;
+		_reader.Close();
+		return platz;
+	}
+
 	public void addauto(Autos autodaten){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -811,5 +858,23 @@ public class Database {
 		//_command = null;
 		_connection .Close();
 		//_connection = null;
+		}
+
+	public bool einchecken(String CarKennzeichen){
+		int anzahlfreeparkplatz = this.getanzahlfreeparkplaetzelimit1 ();
+
+		if (anzahlfreeparkplatz == 0) {
+				return false;
+				}
+		else
+			{
+				Autos auto = new Autos ();
+				auto.setKennzeichen (CarKennzeichen);
+				auto.setStatus ("1");
+				this.addauto (auto);
+				Parkplatz park = this.getfreeParkplatzlimit1 ();
+				this.setStatusbesetztParkplatz (CarKennzeichen,park);
+				return true;
+			}
 		}
 }

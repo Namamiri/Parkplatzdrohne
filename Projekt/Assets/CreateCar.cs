@@ -27,22 +27,39 @@ public class CreateCar : MonoBehaviour {
 
 	}
 
-	public static GameObject onstartpoint(){
-		GameObject Car;
-		Car = Instantiate(Resources.Load("auto")) as GameObject;
+	public static bool onstartpoint(){
+		Database manageDatabase = new Database ();
+
 		string naming = "LP";
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 		naming = naming + Random.Range (25, 999);
-		Car.name = naming;
-		Car.transform.localScale= new Vector3(10,10,10);
-		Car.transform.position = new Vector3 (-7.74f,2f, -11.53f);
-		Rigidbody newrig = Car.AddComponent<Rigidbody>();
-		newrig.mass = 1f;
-		newrig.drag = 0;
-		newrig.angularDrag = 0.5f;
-		return Car;
+
+		bool hatfunktioniert=manageDatabase.einchecken (naming);
+
+		if (hatfunktioniert) {
+			GameObject Car;
+			Car = Instantiate (Resources.Load ("auto")) as GameObject;
+			Car.name = naming;
+			Car.transform.localScale = new Vector3 (10, 10, 10);
+			Car.transform.position = new Vector3 (-7.74f, 2f, -11.53f);
+			Rigidbody newrig = Car.AddComponent<Rigidbody> ();
+			newrig.mass = 1f;
+			newrig.drag = 0;
+			newrig.angularDrag = 0.5f;
+			CreateCar.meshcollidersetconvextrue(Car);
+		}
+		return hatfunktioniert;
 		
+	}
+
+	private static void meshcollidersetconvextrue(GameObject Car){
+		MeshCollider[] meshcollider=Car.GetComponentsInChildren<MeshCollider>();
+		Debug.Log(meshcollider.Length);
+		for (int i=0;i<meshcollider.Length;i++){
+			meshcollider[i].convex=true;
+			meshcollider[1].smoothSphereCollisions=false;
+		}
 	}
 
 	public static void randomfill(){
@@ -66,6 +83,8 @@ public class CreateCar : MonoBehaviour {
 			newrig.mass = 1f;
 			newrig.drag = 0;
 			newrig.angularDrag = 0.5f;
+			CreateCar.meshcollidersetconvextrue(Car);
+
 			}
 	
 	}
