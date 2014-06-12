@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+// Author Burak Yarali
 public class CreateCar : MonoBehaviour {
-
+	// Test nummer Eins ein Object per Code aus einer Prefab laden per Code
 	public static GameObject fromPrefab(){
 		GameObject Car;
 		Debug.Log("Car");
@@ -11,7 +11,7 @@ public class CreateCar : MonoBehaviour {
 		return Car;
 
 	}
-
+	// Test #2 Ein Object aus einer FBX laden per Code
 	public static GameObject fromfbx(){
 		GameObject Car;
 		Car = Instantiate(Resources.Load("auto")) as GameObject;
@@ -26,7 +26,7 @@ public class CreateCar : MonoBehaviour {
 		return Car;
 
 	}
-
+	// Hier wird ein neues Auto Erzeugt, aber erst wenn das Schreiben in die Datenbank erfolg hatte
 	public static bool onstartpoint(){
 		Database manageDatabase = new Database ();
 
@@ -43,16 +43,21 @@ public class CreateCar : MonoBehaviour {
 			Car.name = naming;
 			Car.transform.localScale = new Vector3 (10, 10, 10);
 			Car.transform.position = new Vector3 (-7.74f, 2f, -11.53f);
-			Rigidbody newrig = Car.AddComponent<Rigidbody> ();
-			newrig.mass = 1f;
-			newrig.drag = 0;
-			newrig.angularDrag = 0.5f;
+
+			CreateCar.addrigidbody(Car);
 			CreateCar.meshcollidersetconvextrue(Car);
 		}
 		return hatfunktioniert;
 		
 	}
-
+	// Dem Jeweiligen Object wird eine RigidBody zugewiesen
+	private static void addrigidbody(GameObject Car){
+		Rigidbody newrig = Car.AddComponent<Rigidbody> ();
+		newrig.mass = 1f;
+		newrig.drag = 0;
+		newrig.angularDrag = 0.5f;
+		}
+	// Diese Private funktion setzt bei der als Parameter vergebene GameObject alle Existierenden MeshCollider als Convex
 	private static void meshcollidersetconvextrue(GameObject Car){
 		MeshCollider[] meshcollider=Car.GetComponentsInChildren<MeshCollider>();
 		Debug.Log(meshcollider.Length);
@@ -61,7 +66,7 @@ public class CreateCar : MonoBehaviour {
 			meshcollider[1].smoothSphereCollisions=false;
 		}
 	}
-
+	//Erzeugt Zufällig Autos und setzt sie auf Zufällige Parkplätze
 	public static void randomfill(){
 
 		Database manageDatabase = new Database ();
@@ -78,8 +83,8 @@ public class CreateCar : MonoBehaviour {
 			Car.name = naming;
 			Parkplatz park= manageDatabase.getrandomfreeparkandfillwithcar(naming);
 			Car.transform.localScale= new Vector3(10,10,10);
-			Car.transform.position = new Vector3 (park.getX(),2f,park.getZ());
-			Rigidbody newrig = Car.AddComponent<Rigidbody>();
+			Car.transform.position = new Vector3 (park.getX(),0.6f,park.getZ());
+			Rigidbody newrig = Car.AddComponent<Rigidbody> ();
 			newrig.mass = 1f;
 			newrig.drag = 0;
 			newrig.angularDrag = 0.5f;
@@ -87,6 +92,17 @@ public class CreateCar : MonoBehaviour {
 
 			}
 	
+	}
+	//Hier wird ein auto zum Kill freigegeben. Tatsächlicher kill wird aber erst in dem Script gemacht welche dem Auto Als Komponente beigefügt wird
+	public static void KillCar(){
+		Database manageDatabase = new Database ();
+		Autos car =manageDatabase.getrandomparkingcar ();
+		GameObject CarObject= GameObject.Find (car.getKennzeichen());
+		CarObject.transform.position = new Vector3(-6.35434f,0.5f,-10.67066f);
+		CarObject.transform.rotation = new Quaternion (270f, 180f, 0, 1);
+		manageDatabase.setcartoleave (car.getKennzeichen ());
+
+
 	}
 	
 	

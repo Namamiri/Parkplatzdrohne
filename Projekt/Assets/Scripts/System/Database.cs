@@ -244,7 +244,7 @@ public class Database {
 
 		Autos auto = new Autos ();
 		_reader.Read ();
-		auto.setID(System.Convert.ToString(_reader["ID"]));
+
 		auto.setKennzeichen (System.Convert.ToString(_reader ["KENNZEICHEN"]));
 		auto.setStatus (System.Convert.ToString(_reader ["STATUS"]));
 		_command.Dispose ();
@@ -661,7 +661,7 @@ public class Database {
 			Debug.Log("ROUTE Exists");
 		}
 
-		deleteTabelle ("PARKPLATZ");
+		//deleteTabelle ("PARKPLATZ");
 
 		if (abfrageexisttabelle ("PARKPLATZ") == 0) {
 			sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), XKOORD FLOAT, ZKOORD FLOAT, PRIMARY KEY(PARKPLATZNUMMER))";
@@ -674,17 +674,17 @@ public class Database {
 		//deleteTabelle ("DRONEN");
 
 		if (abfrageexisttabelle ("DRONEN") == 0) {
-			sql = "CREATE TABLE DRONEN (ID INT, AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,  PRIMARY KEY(ID))";
+			sql = "CREATE TABLE DRONEN (ID INT, DronenName VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
 			Debug.Log("DRONEN Exists");
 		}
 
-		//deleteTabelle ("AUTOS");
+		deleteTabelle ("AUTOS");
 
 		if (abfrageexisttabelle ("AUTOS") == 0) {
-			sql = "CREATE TABLE AUTOS (ID INT, KENNZEICHEN VARCHAR(15), STATUS INT,  PRIMARY KEY(ID))";
+			sql = "CREATE TABLE AUTOS ( KENNZEICHEN VARCHAR(15), STATUS INT,  PRIMARY KEY(KENNZEICHEN))";
 			_command.CommandText = sql;
 			_command.ExecuteNonQuery();
 		} else {
@@ -785,6 +785,7 @@ public class Database {
 		//_command = null;
 		_connection .Close();
 		//_connection = null;
+		Debug.Log (autodaten.getKennzeichen ());
 
 		}
 	public Parkplatz getrandomfreeparkandfillwithcar(String Carname){
@@ -808,7 +809,7 @@ public class Database {
 		
 		_connection .Open();
 		
-		sql = "UPDATE AUTOS SET STATUS = '0' WHERE KENNZEICHEN = '"+autodaten.getKennzeichen ()+"'";
+		sql = "UPDATE AUTOS SET STATUS = '2' WHERE KENNZEICHEN = '"+autodaten.getKennzeichen ()+"'";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery();
 		
@@ -831,7 +832,7 @@ public class Database {
 
 		_reader.Read ();
 		Autos Auto=new Autos();
-		Auto.setID (System.Convert.ToString(_reader ["ID"] ));
+
 		Auto.setKennzeichen(System.Convert.ToString(_reader ["KENNZEICHEN"]));
 		Auto.setStatus (System.Convert.ToString(_reader ["STATUS"]));
 		
@@ -859,7 +860,52 @@ public class Database {
 		_connection .Close();
 		//_connection = null;
 		}
+	public Autos getrandomparkingcar(){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT Count(KENNZEICHEN) as COUNT FROM AUTOS WHERE STATUS='2' ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		_reader.Read ();
+		int zufall = UnityEngine.Random.Range (1, System.Convert.ToInt32(_reader ["COUNT"]));
+		_reader.Close ();
+		sql = "SELECT * FROM AUTOS WHERE STATUS = '2' LIMIT "+ zufall;
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		for (int i=0; i<zufall; i++) {
+			_reader.Read();
+				}
+		Autos car = new Autos ();
+		Debug.Log (_reader ["KENNZEICHEN"]);
+		car.setKennzeichen (System.Convert.ToString (_reader ["KENNZEICHEN"]));
+		car.setStatus("2");
+		_command.Dispose();
+		//_command = null;
+		_connection .Close();
+		//_connection = null;
+		return car;
+		}
+	// AutoStatus wird auf 3 Gesetzt Damit der 3th Script innerhalb der CarKomponenten aktiviert wird
+	public void setcartoleave(String Kennzeichen){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		
+		_connection .Open();
+		
+		sql = "UPDATE AUTOS SET STATUS = '3' WHERE KENNZEICHEN = '"+Kennzeichen+"'";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery();
 
+		_command.Dispose();
+		//_command = null;
+		_connection .Close();
+		//_connection = null;
+		}
+	// Diese Funktion übernimmt die Dtenbankeinträge beim Einchecken gleichzeitig wird überprüft ob noch Parkplätze frei sind
 	public bool einchecken(String CarKennzeichen){
 		int anzahlfreeparkplatz = this.getanzahlfreeparkplaetzelimit1 ();
 
@@ -877,4 +923,18 @@ public class Database {
 				return true;
 			}
 		}
+	// Hier wird ein auto gelöscht
+	public void deletecar(Autos car){
+		Debug.Log ("delete Car");
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection.Open();
+		sql = " Delete From AUTOS WHERE KENNZEICHEN= '"+car.getKennzeichen()+"'";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+		
+		_connection.Close ();
+		_command.Dispose();
+	}
 }
