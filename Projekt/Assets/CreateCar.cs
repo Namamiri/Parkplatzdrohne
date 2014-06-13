@@ -46,6 +46,7 @@ public class CreateCar : MonoBehaviour {
 
 			CreateCar.addrigidbody(Car);
 			CreateCar.meshcollidersetconvextrue(Car);
+			CreateCar.materialsColor(Car);
 		}
 		return hatfunktioniert;
 		
@@ -66,6 +67,28 @@ public class CreateCar : MonoBehaviour {
 			meshcollider[1].smoothSphereCollisions=false;
 		}
 	}
+	//Erzeugt zufällig eine Farbe für die AutoKarosserie
+	private static void materialsColor(GameObject Car){
+
+		 
+		GameObject componente=null;
+		Transform pTransform = Car.GetComponent<Transform>();
+		foreach (Transform trs in pTransform) {
+			if (trs.gameObject.name == "Cube_002"){
+				componente =trs.gameObject;
+			}
+		}
+
+
+		Material material = new Material (componente.renderer.material);
+
+		material.color = new Color (Random.Range(0f,1f), Random.Range(0f,1f), Random.Range(0f,1f));
+
+			material.name = "NewLack";
+		componente.renderer.material = material;
+
+
+	}
 	//Erzeugt Zufällig Autos und setzt sie auf Zufällige Parkplätze
 	public static void randomfill(){
 
@@ -84,12 +107,9 @@ public class CreateCar : MonoBehaviour {
 			Parkplatz park= manageDatabase.getrandomfreeparkandfillwithcar(naming);
 			Car.transform.localScale= new Vector3(10,10,10);
 			Car.transform.position = new Vector3 (park.getX(),0.6f,park.getZ());
-			Rigidbody newrig = Car.AddComponent<Rigidbody> ();
-			newrig.mass = 1f;
-			newrig.drag = 0;
-			newrig.angularDrag = 0.5f;
+			CreateCar.addrigidbody(Car);
 			CreateCar.meshcollidersetconvextrue(Car);
-
+			CreateCar.materialsColor(Car);
 			}
 	
 	}
@@ -99,7 +119,7 @@ public class CreateCar : MonoBehaviour {
 		Autos car =manageDatabase.getrandomparkingcar ();
 		GameObject CarObject= GameObject.Find (car.getKennzeichen());
 		CarObject.transform.position = new Vector3(-6.35434f,0.5f,-10.67066f);
-		CarObject.transform.rotation = new Quaternion (270f, 180f, 0, 1);
+		CarObject.transform.rotation = new Quaternion (0f, 180f, 0f, 1);
 		manageDatabase.setcartoleave (car.getKennzeichen ());
 
 

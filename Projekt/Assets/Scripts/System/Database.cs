@@ -826,7 +826,7 @@ public class Database {
 		string sql;
 		IDataReader _reader;
 		_connection .Open();
-		sql = "SELECT * FROM AUTOS WHERE STATUS='1' ";
+		sql = "SELECT * FROM AUTOS WHERE STATUS='1' Limit 1 ";
 		_command.CommandText = sql;
 		_reader = _command.ExecuteReader();
 
