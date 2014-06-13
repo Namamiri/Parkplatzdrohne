@@ -60,7 +60,7 @@ public class CreateCar : MonoBehaviour {
 	// Dem Jeweiligen Object wird eine RigidBody zugewiesen
 	private static void addrigidbody(GameObject Car){
 		Rigidbody newrig = Car.AddComponent<Rigidbody> ();
-		newrig.mass = 1f;
+		newrig.mass = 2f;
 		newrig.drag = 0;
 		newrig.angularDrag = 0.5f;
 		}

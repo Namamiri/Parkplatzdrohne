@@ -2,15 +2,15 @@
 using System.Collections;
 
 public class Drone  {
-	int ID;
+	string Name;
 	int Aktuellerknoten;
 	string LastUsed;
 	int Homepunktid;
-	int Usingtruefalse;
+	int Status;
 
-	public void setID(string Nummer){
-		this.ID = System.Convert.ToInt32(Nummer);
-	}
+	public void setName(string Name){
+		this.Name = Name;
+		}
 
 	public void setAktuellerknoten(string Nummer){
 		this.Aktuellerknoten = System.Convert.ToInt32(Nummer);
@@ -22,8 +22,8 @@ public class Drone  {
 	}
 
 
-	public void setUsingtruefalse(string Nummer){
-		this.Usingtruefalse = System.Convert.ToInt32(Nummer);
+	public void setStatus(string Nummer){
+		this.Status = System.Convert.ToInt32(Nummer);
 	}
 
 
@@ -31,10 +31,9 @@ public class Drone  {
 		this.LastUsed = Nummer;
 	}
 
-	
-	public int getID(){
-		return this.ID;
-	}
+	public string getName(){
+		return this.Name;
+		}
 
 	public int getAktuellerknoten(){
 		return this.Aktuellerknoten;
@@ -48,8 +47,8 @@ public class Drone  {
 		return this.Homepunktid;
 	}
 
-	public int getUsingtruefalse(){
-		return this.Usingtruefalse;
+	public int getStatus(){
+		return this.Status;
 	}
 
 }

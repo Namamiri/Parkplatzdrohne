@@ -6,9 +6,9 @@ public class StartSimu : MonoBehaviour {
 	//List<GameObject> Cars = new List<GameObject>();
 	// Use this for initialization
 	void Start () {
-		GameObject.Find("QuadCopter").animation.Play();
+
 		Database datenbank = new Database ();
-		//datenbank.createDatabase ();
+		datenbank.createDatabase ();
 		//datenbank.filltableParkplatz ();
 		//datenbank.fillTypPunkt ();
 		//datenbank.filltableRoutenPunkte();

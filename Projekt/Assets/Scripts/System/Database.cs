@@ -685,17 +685,17 @@ public class Database {
 			Debug.Log("PARKPLATZ Exists");
 		}
 
-		//deleteTabelle ("DRONEN");
+		deleteTabelle ("DRONEN");
 
 		if (abfrageexisttabelle ("DRONEN") == 0) {
-			sql = "CREATE TABLE DRONEN (ID INT, DronenName VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(ID))";
+			sql = "CREATE TABLE DRONEN (DronenName VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(DronenName))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
 			Debug.Log("DRONEN Exists");
 		}
 
-		deleteTabelle ("AUTOS");
+		//deleteTabelle ("AUTOS");
 
 		if (abfrageexisttabelle ("AUTOS") == 0) {
 			sql = "CREATE TABLE AUTOS ( KENNZEICHEN VARCHAR(15), STATUS INT,  PRIMARY KEY(KENNZEICHEN))";
