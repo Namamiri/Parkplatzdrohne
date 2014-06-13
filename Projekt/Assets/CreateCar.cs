@@ -29,7 +29,7 @@ public class CreateCar : MonoBehaviour {
 	// Hier wird ein neues Auto Erzeugt, aber erst wenn das Schreiben in die Datenbank erfolg hatte
 	public static bool onstartpoint(){
 		Database manageDatabase = new Database ();
-
+		if(manageDatabase.getifactiveCarExists ()==false){
 		string naming = "LP";
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
@@ -47,8 +47,14 @@ public class CreateCar : MonoBehaviour {
 			CreateCar.addrigidbody(Car);
 			CreateCar.meshcollidersetconvextrue(Car);
 			CreateCar.materialsColor(Car);
+			Car.AddComponent<bewegeAuto>();
+			
 		}
-		return hatfunktioniert;
+			return hatfunktioniert;}
+		else {
+			return false;
+		}
+
 		
 	}
 	// Dem Jeweiligen Object wird eine RigidBody zugewiesen

@@ -252,7 +252,21 @@ public class Database {
 		return auto;
 
 		}
+	public void getParkplatzViaKennzeichencount(String Kennzeichen){
+				IDbConnection _connection = new SqliteConnection (_strDBName);
+				IDbCommand _command = _connection .CreateCommand ();
+				string sql;
+				IDataReader _reader;
+				_connection .Open ();
+				int i = 0;
 
+				sql = "SELECT * FROM PARKPLATZ WHERE FREI='0' ";
+				_command.CommandText = sql;
+				_reader = _command.ExecuteReader ();
+				while (_reader.Read ()){
+			Debug.Log ("ParkplatzNummer " + _reader["PARKPLATZNUMMER"]+"   Kennzeichen   "+_reader["KENNZEICHENFAHRZEUG"]);
+		}
+		}
 	public Parkplatz getParkplatzViaKennzeichen (String Kennzeichen){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -848,10 +862,10 @@ public class Database {
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
-		
+		Debug.Log ("Parkplatznummer in setStatusbesetztParkplatz " + pk.getPARKPLATZNUMMER ()+ "  Kennzeichen   " + Kennzeichen);
 		_connection .Open();
 
-		sql = "UPDATE PARKPLATZ SET FREI = '0' AND KENNZEICHENFAHRZEUG ='"+Kennzeichen+"'  WHERE PARKPLATZNUMMER = "+pk.getPARKPLATZNUMMER();
+		sql = "UPDATE PARKPLATZ SET FREI = '0', KENNZEICHENFAHRZEUG = '"+Kennzeichen+"'  WHERE PARKPLATZNUMMER = "+pk.getPARKPLATZNUMMER();
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery();
 		
@@ -919,6 +933,7 @@ public class Database {
 				auto.setStatus ("1");
 				this.addauto (auto);
 				Parkplatz park = this.getfreeParkplatzlimit1 ();
+				
 				this.setStatusbesetztParkplatz (CarKennzeichen,park);
 				return true;
 			}
@@ -937,4 +952,55 @@ public class Database {
 		_connection.Close ();
 		_command.Dispose();
 	}
+	public bool getifactiveCarExists(){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT COUNT(KENNZEICHEN) AS Count FROM AUTOS WHERE STATUS='1' Limit 1 ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		
+		_reader.Read ();
+
+		if (0 < System.Convert.ToInt32 (_reader ["Count"])) 
+		{	_command.Dispose();
+			_connection .Close();
+			_connection = null;
+			_reader.Close();
+			return true;
+				}
+		else{
+			_command.Dispose();
+			_connection .Close();
+			_connection = null;
+			_reader.Close();
+			return false;
+		}
+		
+		
+		_command.Dispose();
+		_connection .Close();
+		_connection = null;
+		_reader.Close();
+	
+		}
+	public void allesaufanfang(){
+		Debug.Log ("delete Car");
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection.Open();
+		sql = " Delete From AUTOS ";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+
+		sql=" UPDATE PARKPLATZ SET KENNZEICHENFAHRZEUG='', FREI='1' WHERE FREI='0'";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+		_command.Dispose();
+		_connection .Close();
+		_connection = null;
+		}
 }

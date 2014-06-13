@@ -9,7 +9,7 @@ public class bewegeAuto : MonoBehaviour {
 	//http://docs.unity3d.com/ScriptReference/Input.GetAxis.html
 	
 	//Fahrtgeschwindigkeit
-	public float speed = 10.0F;
+	public float speed = 1.0F;
 	//Rotationsgeschwindigkeit
 	public float rotationSpeed = 100.0F;
 	
@@ -24,7 +24,7 @@ public class bewegeAuto : MonoBehaviour {
 		translation *= Time.deltaTime;
 		rotation *= Time.deltaTime;
 		//Translation zur z-Achse
-		transform.Translate(0, 0, translation);
+		transform.Translate(translation, 0, 0);
 		//Rotation in y-Achse
 		transform.Rotate(0, rotation, 0);
 	}

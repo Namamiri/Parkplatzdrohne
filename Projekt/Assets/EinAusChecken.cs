@@ -16,6 +16,7 @@ public class EinAusChecken : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.N)) {
 			Debug.Log("Neues Auto wurde Gedrückt");
 			Debug.Log(CreateCar.onstartpoint());
+			WayPointControl.UmstellenderWayPoints();
 		}
 		// Entfernt Auto indem er eine Funktion in Create Car aufruft
 		if (Input.GetKeyDown (KeyCode.Minus)) {
