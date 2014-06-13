@@ -685,10 +685,10 @@ public class Database {
 			Debug.Log("PARKPLATZ Exists");
 		}
 
-		deleteTabelle ("DRONEN");
+		//deleteTabelle ("DRONEN");
 
 		if (abfrageexisttabelle ("DRONEN") == 0) {
-			sql = "CREATE TABLE DRONEN (DronenName VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, USINGTRUEFALSE INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(DronenName))";
+			sql = "CREATE TABLE DRONEN (DRONENNAME VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, STATUS INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(DronenName))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
 		} else {
@@ -1002,5 +1002,67 @@ public class Database {
 		_command.Dispose();
 		_connection .Close();
 		_connection = null;
+		}
+
+	public void fillTableDronen(){
+		Debug.Log ("Dronen");
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		_connection.Open();
+		sql = " Delete From DRONEN";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+		
+		_connection.Close ();
+
+		Drone drone = new Drone ();
+		drone.setName ("QuadCopter");drone.setStatus ("0");this.addDrone (drone);
+		}
+	public void addDrone (Drone drone){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		
+		_connection .Open();
+		
+		sql = "INSERT INTO DRONEN (DRONENNAME,AKTUELLERKNOTEN,HOMEPUNKTID, STATUS,CARTOSHOW) Values ('"+ drone.getName()+"','2','2','0','ef')";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery();
+		
+		_command.Dispose();
+		//_command = null;
+		_connection .Close();
+		//_connection = null;
+		}
+	public void UpdateStatusDrone(String Name,String Status){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		
+		_connection .Open();
+	
+		sql = "UPDATE DRONEN SET STATUS = '"+Status+"' WHERE DRONENNAME = '"+Name+"'";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery();
+		
+		_command.Dispose();
+		//_command = null;
+		_connection .Close();
+		//_connection = null;
+		}
+	public int getStatusDrone(String Name){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
+		sql = "SELECT STATUS FROM DRONEN WHERE DRONENNAME="+Name+" Limit 1 ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		
+		_reader.Read ();
+
+		return System.Convert.ToInt32(_reader["STATUS"]);
 		}
 }
