@@ -44,7 +44,7 @@ public class Waypoint : MonoBehaviour {
 		else*/
 		
 		//c=Flughöhe
-		c = 0.5f;
+		c = 1f;
 		
 		a = 10;
 		b = 10;
@@ -99,11 +99,14 @@ public class Waypoint : MonoBehaviour {
 			//aktuelle Position der Drohne
 			//stoppt die Drohne, soll die Drohne an dieser Stelle weiterfliegen
 			Vector3 dronpos = this.drohnepos ();
-
+			way1 = GameObject.Find ("Routenpunkt1");
 			//Distanz zwischen der Drohne und dem Waypoint bestimmen
 			float distance = Vector3.Distance (dronpos, way1.transform.position);
+			Debug.Log ("Way1   " +distance);
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way1.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
+			Debug.Log (QuadCopter.transform.forward);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
+			Debug.Log (QuadCopter.transform.position);
 			if (distance < 0.2f) {
 				state = State.Way2;
 			}
@@ -113,8 +116,9 @@ public class Waypoint : MonoBehaviour {
 	public void Way2(){
 		if (1.5f > Vector3.Distance (this.drohnepos (), GameObject.Find (manage.getActiveAuto().getKennzeichen()).transform.position)) {
 			Vector3 dronpos = this.drohnepos ();
-
+			way2=GameObject.Find("Routenpunkt2");
 			float distance1 = Vector3.Distance (dronpos, way2.transform.position);
+			Debug.Log ("WAY2   " +distance1);
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way2.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
 			if (distance1 < 0.2f)
@@ -124,8 +128,9 @@ public class Waypoint : MonoBehaviour {
 	public void Way3(){
 		if (1.5f > Vector3.Distance (this.drohnepos (), GameObject.Find (manage.getActiveAuto().getKennzeichen()).transform.position)) {
 			Vector3 dronpos = this.drohnepos ();
-
+			way3=GameObject.Find("Routenpunkt3");
 			float distance2 = Vector3.Distance (dronpos, way3.transform.position);
+			Debug.Log ("Way3  "  +distance2);
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way3.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
 			//if (way4 == null) {
@@ -141,8 +146,9 @@ public class Waypoint : MonoBehaviour {
 	public void Way4(){
 		if (1.5f > Vector3.Distance (this.drohnepos (), GameObject.Find (manage.getActiveAuto().getKennzeichen()).transform.position)) {
 			Vector3 dronpos = this.drohnepos ();
-
+			way4=GameObject.Find("Routenpunkt4");
 			float distance3 = Vector3.Distance (dronpos, way4.transform.position);
+			Debug.Log ("Way4  " +distance3);
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way4.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
 			
