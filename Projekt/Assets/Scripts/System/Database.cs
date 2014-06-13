@@ -685,7 +685,7 @@ public class Database {
 			Debug.Log("PARKPLATZ Exists");
 		}
 
-		//deleteTabelle ("DRONEN");
+		deleteTabelle ("DRONEN");
 
 		if (abfrageexisttabelle ("DRONEN") == 0) {
 			sql = "CREATE TABLE DRONEN (DRONENNAME VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, STATUS INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(DronenName))";
@@ -1057,7 +1057,7 @@ public class Database {
 		string sql;
 		IDataReader _reader;
 		_connection .Open();
-		sql = "SELECT STATUS FROM DRONEN WHERE DRONENNAME="+Name+" Limit 1 ";
+		sql = "SELECT STATUS FROM DRONEN WHERE DRONENNAME = '"+Name+"' Limit 1 ";
 		_command.CommandText = sql;
 		_reader = _command.ExecuteReader();
 		

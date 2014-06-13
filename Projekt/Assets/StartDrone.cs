@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-//Bearbeiter: Hülya und Ann-Kristin
-//Punkte werden in der Szene festgelegt, die die Drohne bei Ausführung des Programms abfliegt
+public class StartDrone : MonoBehaviour {
 
-public class Waypoint : MonoBehaviour {
 	private Database manage = new Database ();
 	public GameObject QuadCopter;
 	public GameObject way1;
@@ -64,27 +62,27 @@ public class Waypoint : MonoBehaviour {
 	void Update ()
 	{
 		
+		
 
-		QuadCopter = GameObject.Find ("QuadCopter");
 		
-		if (2==manage.getStatusDrone(QuadCopter.name)){
-		
+		if (1==manage.getStatusDrone(QuadCopter.name)){
+			
 			switch (state) {
 			case State.Idle:
-			Idle ();
-			break;
+				Idle ();
+				break;
 			case State.Way1:
-			Way1 ();
-			break;
+				Way1 ();
+				break;
 			case State.Way2:
-			Way2 ();
-			break;
+				Way2 ();
+				break;
 			case State.Way3:
-			Way3 ();
-			break;
+				Way3 ();
+				break;
 			case State.Way4:
-			Way4 ();
-			break;
+				Way4 ();
+				break;
 			}}
 	}
 	
@@ -96,11 +94,11 @@ public class Waypoint : MonoBehaviour {
 	
 	public void Way1(){
 		//Distanz zwischen zwei Objekte messen und bei einem bestimmten Abstand die Methode weiter ausführen
-		if (1.5f > Vector3.Distance (this.drohnepos (), GameObject.Find (manage.getActiveAuto().getKennzeichen()).transform.position)) {
+
 			//aktuelle Position der Drohne
 			//stoppt die Drohne, soll die Drohne an dieser Stelle weiterfliegen
 			Vector3 dronpos = this.drohnepos ();
-
+			
 			//Distanz zwischen der Drohne und dem Waypoint bestimmen
 			float distance = Vector3.Distance (dronpos, way1.transform.position);
 			Debug.Log ("Way1   " +distance);
@@ -111,52 +109,48 @@ public class Waypoint : MonoBehaviour {
 			if (distance < 0.21f) {
 				state = State.Way2;
 			}
-		}
+
 	}
 	
 	public void Way2(){
-		if (1.5f > Vector3.Distance (this.drohnepos (), GameObject.Find (manage.getActiveAuto().getKennzeichen()).transform.position)) {
-			Vector3 dronpos = this.drohnepos ();
 
+			Vector3 dronpos = this.drohnepos ();
+			
 			float distance1 = Vector3.Distance (dronpos, way2.transform.position);
 			Debug.Log ("WAY2   " +distance1);
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way2.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
-			if (distance1 < 0.1f)
+			if (distance1 < 0.1f){
 				state = State.Way3;
 		}
 	}
 	public void Way3(){
-		if (1.5f > Vector3.Distance (this.drohnepos (), GameObject.Find (manage.getActiveAuto().getKennzeichen()).transform.position)) {
-			Vector3 dronpos = this.drohnepos ();
 
+			Vector3 dronpos = this.drohnepos ();
+			
 			float distance2 = Vector3.Distance (dronpos, way3.transform.position);
 			Debug.Log ("Way3  "  +distance2);
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way3.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
-			//if (way4 == null) {
-			//		}
-			
-			//	else
-			
-			if (distance2 < 0.1f)
+
+			if (distance2 < 0.1f){
 				state = State.Way4;
 			
 		}
 	}
 	public void Way4(){
-		if (1.5f > Vector3.Distance (this.drohnepos (), GameObject.Find (manage.getActiveAuto().getKennzeichen()).transform.position)) {
-			Vector3 dronpos = this.drohnepos ();
 
+			Vector3 dronpos = this.drohnepos ();
+			
 			float distance3 = Vector3.Distance (dronpos, way4.transform.position);
 			Debug.Log ("Way4  " +distance3);
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way4.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
 			
-			//if (distance3 < 2f)
+			if (distance3 < 0.1f){
+			manage.UpdateStatusDrone ("QuadCopter", "2");
+			state = State.Way1;
 			
-			//state = State.Way1;
-
 			
 		}
 	}

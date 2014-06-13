@@ -48,7 +48,7 @@ public class CreateCar : MonoBehaviour {
 			CreateCar.meshcollidersetconvextrue(Car);
 			CreateCar.materialsColor(Car);
 			Car.AddComponent<bewegeAuto>();
-			
+			manageDatabase.UpdateStatusDrone("QuadCopter","1");
 		}
 			return hatfunktioniert;}
 		else {
@@ -130,7 +130,14 @@ public class CreateCar : MonoBehaviour {
 
 
 	}
+
+	public static void ParkAuto(){
+		Database manageDatabase = new Database ();
+		Autos car = manageDatabase.getActiveAuto ();
+		manageDatabase.deactivateauto (car);
+		manageDatabase.UpdateStatusDrone ("QuadCopter", "3");
 	
 	
 	}
 
+}

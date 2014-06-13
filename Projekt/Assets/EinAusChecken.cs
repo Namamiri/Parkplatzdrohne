@@ -23,5 +23,8 @@ public class EinAusChecken : MonoBehaviour {
 			Debug.Log ("Auto wurde entfernt");
 			CreateCar.KillCar();
 		}
+		if (Input. GetKeyDown (KeyCode.P)){
+			CreateCar.ParkAuto();
+			}
 	}
 }
