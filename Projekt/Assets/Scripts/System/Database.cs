@@ -328,7 +328,7 @@ public class Database {
 				string sql;
 				IDataReader _reader;
 				_connection .Open ();
-				int i = 0;
+				
 
 				sql = "SELECT * FROM PARKPLATZ WHERE FREI='0' ";
 				_command.CommandText = sql;

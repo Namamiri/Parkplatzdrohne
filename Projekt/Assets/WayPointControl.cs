@@ -28,7 +28,7 @@ public class WayPointControl  {
 
 		auto = ManageDatabase.getActiveAuto ();
 		//Debug.Log (" WaypointControl Kennzeichen " + auto.getKennzeichen ());
-		int i = 0;
+
 		ManageDatabase.getParkplatzViaKennzeichencount (auto.getKennzeichen());
 		parki = ManageDatabase.getParkplatzViaKennzeichen (auto.getKennzeichen ());
 		routepoints = ManageDatabase.getRouteViaROUTEID (System.Convert.ToString(parki.getROUTENID ()));
