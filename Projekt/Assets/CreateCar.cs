@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 // Author Burak Yarali
+// Diese Classe Steuert Die Erstellung und die Zerstörung der 3DModelle
 public class CreateCar : MonoBehaviour {
 	private static Database manageDatabase = new Database ();
 	private static GameObject Car;
@@ -138,7 +139,7 @@ public class CreateCar : MonoBehaviour {
 
 
 	}
-
+	// Hier wird das Auto Geparkt also sein Status auf PArken gestellt und der QuadCopter im Status auf den Rückweg gestellt
 	public static void ParkAuto(){
 
 		car = manageDatabase.getActiveAuto ();
