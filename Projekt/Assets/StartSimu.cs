@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿//fertig Kommtentiert
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// Dieser Script Startet Alles
+// Reinigt die Datenbank und füllt den Parkplatz mit zufälligen Autos
 public class StartSimu : MonoBehaviour {
 	//List<GameObject> Cars = new List<GameObject>();
 	// Use this for initialization

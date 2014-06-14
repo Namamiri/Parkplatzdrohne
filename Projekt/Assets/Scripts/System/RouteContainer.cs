@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿//fertig Kommentiert
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// Author Burak Yarali
+// Diese Klasse Gibt den Daten aus der Tabelle ROUTE eine Ansprechbare Umfällt.
+// Diese Klasse Erleichtert das Umgeben mit der Rückgesendeten Liste
 public class RouteContainer  {
 
 	List<Route> RoutenArray= new List<Route>();

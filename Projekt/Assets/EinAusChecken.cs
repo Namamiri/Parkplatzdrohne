@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿//fertig Kommentiert
+using UnityEngine;
 using System.Collections;
 
+// Author Burak Yarali
 // Globale Steuerung für EIn und Auschecken der Autos von hier wird alles gestartet
 
 public class EinAusChecken : MonoBehaviour {
@@ -23,6 +25,7 @@ public class EinAusChecken : MonoBehaviour {
 			Debug.Log ("Auto wurde entfernt");
 			CreateCar.KillCar();
 		}
+		// Hier wird das Auto Geparkt
 		if (Input. GetKeyDown (KeyCode.P)){
 			CreateCar.ParkAuto();
 			}

@@ -1,7 +1,11 @@
-﻿using UnityEngine;
+﻿//fertig Kommentiert
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+// Author Burak Yarali
+// Diese Klasse Gibt den Daten aus der Tabelle Route eine Ansprechbare Umfällt.
+// Diese Klasse Erleichtert das Umgeben mit den Daten
 public class Route {
 	int RoutenID;
 	int PositionID;
