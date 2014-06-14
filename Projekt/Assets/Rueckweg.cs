@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+//Bearbeiter: Hülya und Ann-Kristin
+//Drone kehrt zurück zur Basis/Station
+//Dieses Script wird aktiviert, wenn aktives Auto geparkt hat
 public class Rueckweg : MonoBehaviour {
 
 	private Database manage = new Database ();

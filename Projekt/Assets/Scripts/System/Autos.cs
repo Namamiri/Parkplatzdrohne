@@ -4,7 +4,7 @@ using System.Collections;
 
 // Author Burak Yarali
 // Diese Klasse Gibt den Daten aus der Tabelle Autos eine ansprechbare Umfeld.
-// Diese Klasse Erleichtert das Umgeben mit den Daten
+// Diese Klasse erleichtert den Umgang mit den Daten
 public class Autos  {
 
 

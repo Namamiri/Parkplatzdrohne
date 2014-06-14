@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+//Bearbeiter: Hülya und Ann-Kristin
+//Drohne startet und fliegt zum aktiven Auto
 public class StartDrone : MonoBehaviour {
 
 	private Database manage = new Database ();
@@ -45,7 +46,7 @@ public class StartDrone : MonoBehaviour {
 		//}
 		else*/
 		
-		//c=Flughöhe
+		/*//c=Flughöhe
 		c = 1f;
 		
 		a = 10;
@@ -59,7 +60,7 @@ public class StartDrone : MonoBehaviour {
 		//way1.transform.position = new Vector3 (a,c,b);
 		//way2.transform.position = new Vector3 (d,c,e);
 		//way3.transform.position = new Vector3 (g,c,h);
-		//way4.transform.position = new Vector3 (j,c,k);
+		//way4.transform.position = new Vector3 (j,c,k);*/
 	}
 	
 	// Update is called once per frame

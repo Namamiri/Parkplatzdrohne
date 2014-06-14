@@ -291,7 +291,7 @@ public class Database {
 	}
 
 	// Hier wird Ein Auto aus der Datenbank genommen mit einem als Parameter gegebenem Kennzeichen
-	// Die Rückgabe ist eione Object der Klasse Autos
+	// Die Rückgabe ist eine Object der Klasse Autos
 	public Autos getAutoViaKennzeichen(String Kennzeichen){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
