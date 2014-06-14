@@ -1,15 +1,18 @@
-﻿using UnityEngine;
+﻿//fertig Kommentiert
+using UnityEngine;
 using System.Collections;
 using System.Data;
 using Mono.Data.SqliteClient;
 using System;
 using System.Collections.Generic;
 
-  
+ // Author Burak Yarali
+// Hier werden alle Datenbankeinträge Gesteuert. Diese Klasse ist beim MVC-Schema der Modell da alle zustände hier gespeichert werden
 public class Database {
 	string _strDBName = "URI=file:MasterSQLite.db";
 	int StatusCar;
 	int StatusDrone;
+	// Test 1 Zuerst Klasse als MonoBehaviuor an ein Object gehängt. Jetzt Wird es als eigenes Objekt behandelt
 	public void Start () {
 		Debug.Log("Datenbankklasse startet");
 
@@ -54,6 +57,7 @@ public class Database {
 	// Update is called once per frame
 	void Update () {
 	}
+	// Hier wird überprüft ob eine bestimmte Tabelle in der Datenbank existieren. Die Anzahl der Funde wird Zurückgegeben. 1=Existiert; 0=Gibt es nicht
 	public int abfrageexisttabelle(string Tabellenname){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -65,13 +69,19 @@ public class Database {
 		_reader = _command.ExecuteReader();
 		_reader.Read ();
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
+		_command.Dispose ();
+		_command = null;
+		int anzahl = System.Convert.ToInt32 (_reader ["Count"]);
 		_reader.Close();
-
-		return System.Convert.ToInt32(_reader["Count"]);
+		_reader.Dispose ();
+		_reader = null;
+		return anzahl;
 
 
 	}
+	//Hier Wird die Anzahl der Freien Parkplätze als Rückgabe geliefert
 	public int getanzahlfreeparkplaetze (){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -83,12 +93,18 @@ public class Database {
 		_reader = _command.ExecuteReader();
 		_reader.Read ();
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
+		_command.Dispose ();
+		_command=null;
 		int wert = System.Convert.ToInt32(_reader ["Count"]);
 		_reader.Close();
+		_reader.Dispose ();
+		_reader = null;
 		return wert;
 
 		}
+	//Hier wird angegeben ob es Mindestens Ein Freies Parkplatz gibt
 	public int getanzahlfreeparkplaetzelimit1 (){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -100,12 +116,21 @@ public class Database {
 		_reader = _command.ExecuteReader();
 		_reader.Read ();
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
+		_command.Dispose ();
+		_command = null;
 		int wert = System.Convert.ToInt32(_reader ["Count"]);
 		_reader.Close();
+		_reader.Dispose ();
+		_reader = null;
 		return wert;
 		
 	}
+
+	// Hier wird die Tabelle Parkplatz mit den nötigen Werten gefüllt. 
+	// Es wurde nur am anfang benötigt um Änderungen bei jedem Start zu übernehmen 
+	// Wird zurzeit nicht mehr genutzt
 	public void filltableParkplatz(){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -117,7 +142,10 @@ public class Database {
 		_command.ExecuteNonQuery ();
 
 		_connection.Close ();
-
+		_connection.Dispose ();
+		_connection = null;
+		_command.Dispose ();
+		_command = null;
 		Parkplatz park = new Parkplatz ();
 
 		for (int i=1; i<=46; i++) {
@@ -127,7 +155,7 @@ public class Database {
 		}
 
 	}
-
+	// Hier wird ein RoutenPunkt zurückgegeben der einen Bestimmten Knotennamen trägt. PK... ist das Schema
 	public RoutenPunkte getRoutePointPKviaNumber(String ID){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -147,12 +175,19 @@ public class Database {
 		point.setZ(System.Convert.ToString(_reader["ZKOORD"]));
 
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
+		_reader = null;
 
 		return point;
 		
 	}
-
+	// Hier werden die Datensätze in die Datenbank Eingefügt für die Tabelle Parkplatz.
+	// Die einzufügenden Werte werden als Parameter gegeben.
 	void addParkPlatz(Parkplatz park){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -164,10 +199,14 @@ public class Database {
 		_command.ExecuteReader();
 
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
 
 	}
-
+	// Hier werden die Datensätze in die Datenbank Eingefügt für die Tabelle TypPunkte.
+	// Die einzufügenden Werte werden als Parameter gegeben.
 	void addTypforPunkt(TypPunkte typen){
 		
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -179,10 +218,16 @@ public class Database {
 		_command.ExecuteReader();
 		
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
-
+		_connection.Dispose ();
+		_connection = null;
+		
 	}
 
+	// Hier wird die Tabelle TypPunkte mit den nötigen Werten gefüllt. 
+	// Es wurde nur am anfang benötigt um Änderungen bei jedem Start zu übernehmen 
+	// Wird zurzeit nicht mehr genutzt
 	public void fillTypPunkt(){
 		Debug.Log ("fillTypPunkte");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -193,7 +238,11 @@ public class Database {
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 		
+		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
 
 		TypPunkte typen = new TypPunkte ();
 		typen.setID ("1"); typen.setTypbezeichnung ("Abzweigung"); this.addTypforPunkt (typen);
@@ -202,6 +251,8 @@ public class Database {
 		typen.setID ("4"); typen.setTypbezeichnung ("Start"); this.addTypforPunkt (typen);
 	}
 
+	// Hier werden die Datensätze in die Datenbank Eingefügt für die Tabelle RoutenPunkte.
+	// Die einzufügenden Werte werden als Parameter gegeben.
 	void addRoutenPunkte(RoutenPunkte punkte){
 		
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -213,10 +264,15 @@ public class Database {
 		_command.ExecuteReader();
 		
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
-		Debug.Log ("KnotenID " + punkte.getID() + " ; KnotenName " + punkte.getKnotenname()+" ; XKOORD: "+punkte.getX()+" ; ZKOORD: "+punkte.getZ());
+		_connection.Dispose ();
+		_connection = null;
+		//Debug.Log ("KnotenID " + punkte.getID() + " ; KnotenName " + punkte.getKnotenname()+" ; XKOORD: "+punkte.getX()+" ; ZKOORD: "+punkte.getZ());
 	}
 
+	// Hier werden die Datensätze in die Datenbank Eingefügt für die Tabelle Route.
+	// Die einzufügenden Werte werden als Parameter gegeben.
 	void addRoute(Route punkte){
 		
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -226,12 +282,16 @@ public class Database {
 		sql = "INSERT INTO ROUTE (ROUTENID, POSITION, PUNKTID) Values ("+punkte.getRoutenID()+",'"+punkte.getPositionID()+"',"+punkte.getKnotenID()+")";
 		_command.CommandText = sql;
 		_command.ExecuteReader();
-		
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
-		Debug.Log ("KnotenID " + punkte.getKnotenID() + " ; Position " + punkte.getPositionID()+" ; RoutenID: "+punkte.getRoutenID());
+		_connection.Dispose ();
+		_connection = null;
+		//Debug.Log ("KnotenID " + punkte.getKnotenID() + " ; Position " + punkte.getPositionID()+" ; RoutenID: "+punkte.getRoutenID());
 	}
 
+	// Hier wird Ein Auto aus der Datenbank genommen mit einem als Parameter gegebenem Kennzeichen
+	// Die Rückgabe ist eione Object der Klasse Autos
 	public Autos getAutoViaKennzeichen(String Kennzeichen){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -249,10 +309,19 @@ public class Database {
 		auto.setKennzeichen (System.Convert.ToString(_reader ["KENNZEICHEN"]));
 		auto.setStatus (System.Convert.ToString(_reader ["STATUS"]));
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
+		_reader = null;
 		return auto;
 
 		}
+	// Diese Wurde als Test benutzt um zu gucken ob eine Änderung an der Tabelle vorgenommen worden ist.
+	// Problem war Kennzeichen wurden nicht beim einfahren eines Neuen Autos nich zu einem Parkplatz zugewiesen
+	// Wird nicht mehr Verwendet
 	public void getParkplatzViaKennzeichencount(String Kennzeichen){
 				IDbConnection _connection = new SqliteConnection (_strDBName);
 				IDbCommand _command = _connection .CreateCommand ();
@@ -265,9 +334,19 @@ public class Database {
 				_command.CommandText = sql;
 				_reader = _command.ExecuteReader ();
 				while (_reader.Read ()){
-			Debug.Log ("ParkplatzNummer " + _reader["PARKPLATZNUMMER"]+"   Kennzeichen   "+_reader["KENNZEICHENFAHRZEUG"]);
+			//Debug.Log ("ParkplatzNummer " + _reader["PARKPLATZNUMMER"]+"   Kennzeichen   "+_reader["KENNZEICHENFAHRZEUG"]);
 		}
-		}
+		_command.Dispose ();
+		_command = null;
+		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
+		_reader = null;
+	}
+	// Hier wird nach dem Parkplatz gesucht der zu einem Als Parameter gegbenem PKW-Kennzeichen gehört.
+	// Die Rückgabe ist von der Klasse PArkplatz
 	public Parkplatz getParkplatzViaKennzeichen (String Kennzeichen){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -280,6 +359,7 @@ public class Database {
 
 		Parkplatz parkplatz = new Parkplatz ();
 		_reader.Read ();
+		// Hier werden die Gefundenen werte in das objekt PArkplatz geschrieben
 		parkplatz.setFREI(System.Convert.ToString(_reader["FREI"]));
 		parkplatz.setPARKPLATZNUMMER(System.Convert.ToString(_reader["PARKPLATZNUMMER"]));
 		parkplatz.setROUTENID(System.Convert.ToString(_reader["ROUTENID"]));
@@ -288,10 +368,19 @@ public class Database {
 		parkplatz.setZKOORD(System.Convert.ToString(_reader["ZKOORD"]));
 
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
+		_reader = null;
 		return parkplatz;
 		}
 
+	// Hier wird ein COntainer erzeugt der alle punkte der Ausgewechlten Routen beinhaltet.
+	// Die Ausgewählte Route wird per PArameter gegeben
+	// Rückgabe ist ein RoutenContainer
 	public RouteContainer getRouteViaROUTEID (String RouteID){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -302,6 +391,8 @@ public class Database {
 		_command.CommandText = sql;
 		_reader = _command.ExecuteReader();
 		RouteContainer container=new RouteContainer();
+
+		// Hier wird die Schleife so oft Durchlaufen bis alle Funde durchfahren worden sind.
 		while (_reader.Read()){
 			Route Routeelement=new Route();
 			Routeelement.setRoutenID(System.Convert.ToString(_reader["ROUTENID"]));
@@ -309,12 +400,21 @@ public class Database {
 			Routeelement.setKnotenID(System.Convert.ToString(_reader["PUNKTID"]));
 			container.addRoute(Routeelement);
 		}
+
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
+		_reader = null;
 
 		return container;
 		}
 
+	// Hier wird ein Routenpunkt zurückgegeben der einen per PArameter gegebenen ID gesucht wird.
+	// Diese ID existiert nur 1 mal in der Tabelle
 	public RoutenPunkte getRoutePointViaID(String ID){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -331,23 +431,39 @@ public class Database {
 		point.setTYPID(System.Convert.ToString(_reader["TYPID"]));
 		point.setX(System.Convert.ToString(_reader["XKOORD"]));
 		point.setZ(System.Convert.ToString(_reader["ZKOORD"]));
+
 		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
+		_reader = null;
 		return point;
 
 		}
 
+	// Hier wird die Tabelle Route mit den nötigen Werten gefüllt. 
+	// Es wurde nur am anfang benötigt um Änderungen bei jedem Start zu übernehmen 
+	// Wird zurzeit nicht mehr genutzt
 	public void filltableRoute(){
 		Debug.Log ("RoutePoints");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection.Open();
+
+		// Leeren der Tabelle
 		sql = " Delete From ROUTE";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 		
+		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
 
 		Route PointstoRoute = new Route ();
 		//First Route
@@ -539,17 +655,27 @@ public class Database {
 		PointstoRoute.setRoutenID ("46");PointstoRoute.setPositionID ("2");PointstoRoute.setKnotenID ("72");this.addRoute (PointstoRoute);
 		PointstoRoute.setRoutenID ("46");PointstoRoute.setPositionID ("3");PointstoRoute.setKnotenID ("74");this.addRoute (PointstoRoute);
 	}
+
+	// Hier wird die Tabelle RoutenPunkte mit den nötigen Werten gefüllt. 
+	// Es wurde nur am anfang benötigt um Änderungen bei jedem Start zu übernehmen 
+	// Wird zurzeit nicht mehr genutzt
 	public void filltableRoutenPunkte(){
 		Debug.Log ("RoutePoints");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection.Open();
+
+		//Leeren der Tabelle
 		sql = " Delete From Routenpunkte";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 		
+		_command.Dispose ();
+		_command = null;
 		_connection.Close ();
+		_connection.Dispose ();
+		_connection = null;
 
 		RoutenPunkte Punkt = new RoutenPunkte ();
 
@@ -638,6 +764,9 @@ public class Database {
 
 	}
 
+	// Diese Methode war für den aller Ersten Start benutzt worden.
+	// Hier werden alle Tabelle mit den Benötigten Spalten und Eigenschaften erzeugt
+	// Wird nicht mehr verwendet
 	public void createDatabase(){
 
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -707,10 +836,14 @@ public class Database {
 		}
 
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
-		//_connection = null;
+		_connection.Dispose ();
+		_connection = null;
 	}
+
+	// Diese Methode wird benutzt um die gegebene Tabelle (als String) wenn es Exsistiert zu lösen
+	// TabellenName wird per Parameter gegeben
 	public void deleteTabelle(string Tabelle){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -722,9 +855,13 @@ public class Database {
 
 
 		_command.Dispose();
+		_command = null;
 		_connection .Close();
+		_connection.Dispose ();
+		_connection = null;
 		}
 
+	// Hier wird eine Liste von Freien Parkplätze als Rückgabe geschickt
 	public List<Parkplatz> getfreeParkplatz(){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -735,8 +872,9 @@ public class Database {
 		_command.CommandText = sql;
 		_reader = _command.ExecuteReader();
 		List<Parkplatz> Liste= new List<Parkplatz> ();
+		Parkplatz platz=new Parkplatz();
 		while (_reader.Read ()) {
-			Parkplatz platz=new Parkplatz();
+
 			platz.setPARKPLATZNUMMER(System.Convert.ToString(_reader["PARKPLATZNUMMER"]));
 			platz.setFREI(System.Convert.ToString(_reader["FREI"]));
 			platz.setKENNZEICHEN(System.Convert.ToString(_reader["KENNZEICHENFAHRZEUG"]));
@@ -749,12 +887,17 @@ public class Database {
 
 		
 		_command.Dispose();
+		_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
 		_reader.Close();
+		_reader.Dispose ();
+		_reader = null;
 		return Liste;
 	}
 
+	// Hier wird nur der Erste freie Parkplatz zurückgeschickt
 	public Parkplatz getfreeParkplatzlimit1(){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -775,16 +918,19 @@ public class Database {
 			platz.setZKOORD(System.Convert.ToString(_reader["ZKOORD"]));
 			
 			
-	
-		
-		
 		_command.Dispose();
+		_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
 		_reader.Close();
+		_reader.Dispose ();
+		_reader = null;
 		return platz;
 	}
 
+	//Diese Methode Schreibt ein Gegebenes Auto in die Datenbank.
+	// Das Auto wird als Parameter gegeben
 	public void addauto(Autos autodaten){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -797,13 +943,17 @@ public class Database {
 		_command.ExecuteNonQuery();
 
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
-		Debug.Log (autodaten.getKennzeichen ());
+		_connection = null;
+		//Debug.Log (autodaten.getKennzeichen ());
 
 		}
+
+	// Hier wird ein Random Parkplatz aus den Freien Parkplätzen gesucht
+	// Der Gewählte Parkplatz wird mit dem als Parameter gegebenem Auto gefüllt
+	// Und der gewählte Parkplatz wird zurückgesendet
 	public Parkplatz getrandomfreeparkandfillwithcar(String Carname){
 		Autos auto = new Autos ();
 		auto.setKennzeichen (Carname);
@@ -816,8 +966,12 @@ public class Database {
 		int wohin = UnityEngine.Random.Range (0, anzahlfreierParkplaetze-1);
 		gewaehlt = parkplaetze [wohin];
 		this.setStatusbesetztParkplatz (Carname, gewaehlt);
+		auto = null;
+		parkplaetze = null;
 		return  gewaehlt;
 		}
+
+	// Hier wird ein gegebenes Auto auf Parking gesetzt
 	public void deactivateauto(Autos autodaten){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -830,13 +984,14 @@ public class Database {
 		_command.ExecuteNonQuery();
 		
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
+		_connection = null;
 		
 	}
 
+	// Hier wird das erste Active Auto aus der Liste zurückgeschickt
 	public Autos getActiveAuto(){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -855,19 +1010,22 @@ public class Database {
 		
 		
 		_command.Dispose();
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
 		_connection = null;
 		_reader.Close();
 		_reader.Dispose ();
+		_reader = null;
 		return Auto;
 		}
 
+	// Hier wird ein gegebenes Parkplatz mit einem Gegebenen Auto Besetzt
 	public void setStatusbesetztParkplatz(String Kennzeichen,Parkplatz pk){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
-		Debug.Log ("Parkplatznummer in setStatusbesetztParkplatz " + pk.getPARKPLATZNUMMER ()+ "  Kennzeichen   " + Kennzeichen);
+		//Debug.Log ("Parkplatznummer in setStatusbesetztParkplatz " + pk.getPARKPLATZNUMMER ()+ "  Kennzeichen   " + Kennzeichen);
 		_connection .Open();
 
 		sql = "UPDATE PARKPLATZ SET FREI = '0', KENNZEICHENFAHRZEUG = '"+Kennzeichen+"'  WHERE PARKPLATZNUMMER = "+pk.getPARKPLATZNUMMER();
@@ -875,11 +1033,13 @@ public class Database {
 		_command.ExecuteNonQuery();
 		
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
+		_connection = null;
 		}
+
+	// Hier wird ein zufälliges PArkendes Auto zurückgesendet
 	public Autos getrandomparkingcar(){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -895,23 +1055,26 @@ public class Database {
 		sql = "SELECT * FROM AUTOS WHERE STATUS = '2' LIMIT "+ zufall;
 		_command.CommandText = sql;
 		_reader = _command.ExecuteReader();
+
+		// Hier wird ein zufälliges Auto gesucht
 		for (int i=0; i<zufall; i++) {
 			_reader.Read();
 				}
 		Autos car = new Autos ();
-		Debug.Log (_reader ["KENNZEICHEN"]);
+		//Debug.Log (_reader ["KENNZEICHEN"]);
 		car.setKennzeichen (System.Convert.ToString (_reader ["KENNZEICHEN"]));
 		car.setStatus("2");
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
+		_connection = null;
 		_reader.Close ();
 		_reader.Dispose ();
+		_reader = null;
 		return car;
 		}
-	// AutoStatus wird auf 3 Gesetzt Damit der 3th Script innerhalb der CarKomponenten aktiviert wird
+	// AutoStatus wird auf 3 Gesetzt Damit der Lösch-Part des Scripts innerhalb der CarKomponenten aktiviert wird
 	public void setcartoleave(String Kennzeichen){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -924,15 +1087,16 @@ public class Database {
 		_command.ExecuteNonQuery();
 
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
+		_connection = null;
 		}
-	// Diese Funktion übernimmt die Dtenbankeinträge beim Einchecken gleichzeitig wird überprüft ob noch Parkplätze frei sind
+
+	// Diese Funktion übernimmt die Datenbankeinträge beim Einchecken gleichzeitig wird überprüft ob noch Parkplätze frei sind
 	public bool einchecken(String CarKennzeichen){
 		int anzahlfreeparkplatz = this.getanzahlfreeparkplaetzelimit1 ();
-
+		// Wenn kein Parkplatz frei ist wird kein auto erzeugt
 		if (anzahlfreeparkplatz == 0) {
 				return false;
 				}
@@ -948,9 +1112,9 @@ public class Database {
 				return true;
 			}
 		}
-	// Hier wird ein auto gelöscht
+	// Hier wird ein Auto gelöscht
 	public void deletecar(String Kennzeichen){
-		Debug.Log ("delete Car");
+		//Debug.Log ("delete Car");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
@@ -961,8 +1125,13 @@ public class Database {
 		
 		_connection.Close ();
 		_connection.Dispose ();
+		_connection = null;
 		_command.Dispose();
+		_command = null;
 	}
+
+	//Hier wird geguckt ob überhaupt ein aktives auto existiert
+	// ein Boolwert wird zurückgeschickt
 	public bool getifactiveCarExists(){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -975,34 +1144,33 @@ public class Database {
 		
 		_reader.Read ();
 
+		// Wenn ein oder mehr Active Autos existieren wirt ein True gegeben sonst ein false
 		if (0 < System.Convert.ToInt32 (_reader ["Count"])) 
 		{	_command.Dispose();
+			_command=null;
 			_connection .Close();
 			_connection.Dispose();
 			_connection = null;
 			_reader.Close();
 			_reader.Dispose();
+			_reader=null;
 			return true;
 				}
 		else{
 			_command.Dispose();
+			_command=null;
 			_connection .Close();
 			_connection.Dispose();
 			_connection = null;
 			_reader.Close();
 			_reader.Dispose();
+			_reader=null;
 			return false;
 		}
-		
-		
-		_command.Dispose();
-		_connection .Close();
-		_connection.Dispose ();
-		_connection = null;
-		_reader.Close();
-		_reader.Dispose ();
 	
 		}
+
+	//Hier wird die Datenbank wieder auf Anfang gesetzt. Alle Änderungen beim Letzten Ausführen des Programms werden gelöst
 	public void allesaufanfang(){
 		Debug.Log ("delete Car");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -1016,12 +1184,16 @@ public class Database {
 		sql=" UPDATE PARKPLATZ SET KENNZEICHENFAHRZEUG='', FREI='1' WHERE FREI='0'";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
+
 		_command.Dispose();
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
 		_connection = null;
 		}
 
+	// Hier wird die Tabelle Drone gefüllt
+	// Zurzeit ist es nur eine Drone
 	public void fillTableDronen(){
 		Debug.Log ("Dronen");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
@@ -1033,11 +1205,17 @@ public class Database {
 		_command.ExecuteNonQuery ();
 		
 		_connection.Close ();
-		_command.Dispose ();
 		_connection.Dispose ();
+		_connection = null;
+		_command.Dispose ();
+		_command = null;
+	
 		Drone drone = new Drone ();
 		drone.setName ("QuadCopter");drone.setStatus ("0");this.addDrone (drone);
+		drone = null;
 		}
+
+	// Hier wird eine gegebene Drone in die Tabelle DRONEN eingefüllt
 	public void addDrone (Drone drone){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -1050,11 +1228,14 @@ public class Database {
 		_command.ExecuteNonQuery();
 		
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
+		_connection = null;
+		sql = null;
 		}
+
+	// Hier wird der Status der gegebenen Dronen auf gegebene Status gesetzt
 	public void UpdateStatusDrone(String Name,String Status){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -1067,11 +1248,14 @@ public class Database {
 		_command.ExecuteNonQuery();
 		
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
+		_connection = null;
+		sql = null;
 		}
+
+	// Hier wird der Status des Gegebenen Drone Zurückgeschickt
 	public int getStatusDrone(String Name){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -1085,14 +1269,18 @@ public class Database {
 		_reader.Read ();
 		StatusDrone = System.Convert.ToInt32 (_reader ["STATUS"]);
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
 		_connection.Dispose ();
-		//_connection = null;
+		_connection = null;
 		_reader.Close ();
 		_reader.Dispose ();
+		_reader = null;
+		sql = null;
 		return StatusDrone;
 		}
+
+	// Hier wird der Status des Gegebenen Autos Zurückgeschickt
 	public int stateofcar(String Kennzeichen){
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
@@ -1108,10 +1296,13 @@ public class Database {
 		StatusCar = System.Convert.ToInt32 (_reader ["STATUS"]);
 		_reader.Close ();
 		_reader.Dispose ();
+		_reader = null;
 		_command.Dispose();
-		//_command = null;
+		_command = null;
 		_connection .Close();
-		//_connection = null;
+		_connection.Dispose ();
+		_connection = null;
+		sql = null;
 		return StatusCar;
 
 		}

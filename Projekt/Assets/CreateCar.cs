@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿// Fertig Kommentiert
+using UnityEngine;
 using System.Collections;
 // Author Burak Yarali
 // Diese Classe Steuert Die Erstellung und die Zerstörung der 3DModelle
@@ -50,8 +51,9 @@ public class CreateCar : MonoBehaviour {
 			Car = Instantiate (Resources.Load ("auto")) as GameObject;
 			Car.name = naming;
 			Car.transform.localScale = new Vector3 (10, 10, 10);
+			// HIer ist der StartPunkt an dem das Auto geladen wird
 			Car.transform.position = new Vector3 (-7.74f, 2f, -11.53f);
-
+			// Komponenten werden Eingefügt
 			CreateCar.addrigidbody(Car);
 			CreateCar.meshcollidersetconvextrue(Car);
 			CreateCar.materialsColor(Car);

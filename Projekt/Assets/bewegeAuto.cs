@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//Fertig Kommentiert
+using UnityEngine;
 using System.Collections;
 
 //Bearbeiter: Hülya und Ann-Kristin
