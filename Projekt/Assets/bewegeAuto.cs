@@ -7,26 +7,38 @@ using System.Collections;
 public class bewegeAuto : MonoBehaviour {
 
 	//http://docs.unity3d.com/ScriptReference/Input.GetAxis.html
-	
+	Database manage = new Database ();
 	//Fahrtgeschwindigkeit
 	public float speed = 1.0F;
 	//Rotationsgeschwindigkeit
 	public float rotationSpeed = 100.0F;
-	
-	
+
+	float translation;
+	float rotation;
+	Vector3 ziel=new Vector3(-10.00448f,-0.01464844f,-10.67066f);
 	void Update() {
-		//Bei vertikalen Pfeiltasten (oben & unten), bewegt sich das Objekt vorwärts oder rückwärts
-		float translation = Input.GetAxis("Vertical") * speed;
-		//Bei horizontalen Pfeiltasten (rechts & links), rotiert das Objekt in die entsprechende Richtung
-		float rotation = Input.GetAxis("Horizontal") * rotationSpeed;
-		//andere Schreibweise: translation = translation * Time.deltaTime;
-		//mit der Multiplikation von Time.deltaTime bewegt/rotiert sich das Objekt flüssig in die entsprechende Richtung
-		translation *= Time.deltaTime;
-		rotation *= Time.deltaTime;
-		//Translation zur z-Achse
-		transform.Translate(translation, 0, 0);
-		//Rotation in y-Achse
-		transform.Rotate(0, rotation, 0);
+
+
+		if (1 == manage.stateofcar (gameObject.name)) {
+						//Bei vertikalen Pfeiltasten (oben & unten), bewegt sich das Objekt vorwärts oder rückwärts
+						translation = Input.GetAxis ("Vertical") * speed;
+						//Bei horizontalen Pfeiltasten (rechts & links), rotiert das Objekt in die entsprechende Richtung
+						rotation = Input.GetAxis ("Horizontal") * rotationSpeed;
+						//andere Schreibweise: translation = translation * Time.deltaTime;
+						//mit der Multiplikation von Time.deltaTime bewegt/rotiert sich das Objekt flüssig in die entsprechende Richtung
+						translation *= Time.deltaTime;
+						rotation *= Time.deltaTime;
+						//Translation zur z-Achse
+						transform.Translate (translation, 0, 0);
+						//Rotation in y-Achse
+						transform.Rotate (0, rotation, 0);
+		} else if (3 == manage.stateofcar (gameObject.name)) {
+			gameObject.transform.position = Vector3.MoveTowards(gameObject.transform.position, ziel, 1 * Time.deltaTime);
+			if (Vector3.Distance(gameObject.transform.position,ziel)<0.2f){
+				manage.deletecar(gameObject.name);
+				DestroyImmediate(gameObject);
+			}
+		}
 	}
 }
 

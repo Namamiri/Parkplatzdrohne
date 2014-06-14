@@ -8,7 +8,7 @@ public class StartSimu : MonoBehaviour {
 	void Start () {
 
 		Database datenbank = new Database ();
-		datenbank.createDatabase ();
+		//datenbank.createDatabase ();
 		//datenbank.filltableParkplatz ();
 		//datenbank.fillTypPunkt ();
 		//datenbank.filltableRoutenPunkte();
@@ -20,6 +20,8 @@ public class StartSimu : MonoBehaviour {
 		//this.Cars.Add (CreateCar.onstartpoint ());
 		CreateCar.randomfill ();
 		//TypPunkte typenPunkte = new TypPunkte ();
+
+
 	}
 	
 	// Update is called once per frame

@@ -2,9 +2,16 @@
 using System.Collections;
 // Author Burak Yarali
 public class CreateCar : MonoBehaviour {
+	private static Database manageDatabase = new Database ();
+	private static GameObject Car;
+	private static Autos car ;
+	private static string naming;
+	private static GameObject componente=null;
+	private static MeshCollider[] meshcollider;
+	private static Rigidbody newrig;
 	// Test nummer Eins ein Object per Code aus einer Prefab laden per Code
 	public static GameObject fromPrefab(){
-		GameObject Car;
+
 		Debug.Log("Car");
 		Car = Instantiate(Resources.Load ("Capsule")) as GameObject;
 		Car.transform.Translate (new Vector3 (3, 3, 3));
@@ -13,9 +20,9 @@ public class CreateCar : MonoBehaviour {
 	}
 	// Test #2 Ein Object aus einer FBX laden per Code
 	public static GameObject fromfbx(){
-		GameObject Car;
+	
 		Car = Instantiate(Resources.Load("auto")) as GameObject;
-		string naming = "SO";
+		naming = "SO";
 
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
@@ -28,9 +35,9 @@ public class CreateCar : MonoBehaviour {
 	}
 	// Hier wird ein neues Auto Erzeugt, aber erst wenn das Schreiben in die Datenbank erfolg hatte
 	public static bool onstartpoint(){
-		Database manageDatabase = new Database ();
+
 		if(manageDatabase.getifactiveCarExists ()==false){
-		string naming = "LP";
+		naming = "LP";
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 		naming = naming + Random.Range (25, 999);
@@ -38,7 +45,7 @@ public class CreateCar : MonoBehaviour {
 		bool hatfunktioniert=manageDatabase.einchecken (naming);
 
 		if (hatfunktioniert) {
-			GameObject Car;
+			
 			Car = Instantiate (Resources.Load ("auto")) as GameObject;
 			Car.name = naming;
 			Car.transform.localScale = new Vector3 (10, 10, 10);
@@ -59,14 +66,14 @@ public class CreateCar : MonoBehaviour {
 	}
 	// Dem Jeweiligen Object wird eine RigidBody zugewiesen
 	private static void addrigidbody(GameObject Car){
-		Rigidbody newrig = Car.AddComponent<Rigidbody> ();
+		newrig = Car.AddComponent<Rigidbody> ();
 		newrig.mass = 2f;
 		newrig.drag = 0;
 		newrig.angularDrag = 0.5f;
 		}
 	// Diese Private funktion setzt bei der als Parameter vergebene GameObject alle Existierenden MeshCollider als Convex
 	private static void meshcollidersetconvextrue(GameObject Car){
-		MeshCollider[] meshcollider=Car.GetComponentsInChildren<MeshCollider>();
+		meshcollider=Car.GetComponentsInChildren<MeshCollider>();
 		Debug.Log(meshcollider.Length);
 		for (int i=0;i<meshcollider.Length;i++){
 			meshcollider[i].convex=true;
@@ -77,7 +84,7 @@ public class CreateCar : MonoBehaviour {
 	private static void materialsColor(GameObject Car){
 
 		 
-		GameObject componente=null;
+
 		Transform pTransform = Car.GetComponent<Transform>();
 		foreach (Transform trs in pTransform) {
 			if (trs.gameObject.name == "Cube_002"){
@@ -98,14 +105,14 @@ public class CreateCar : MonoBehaviour {
 	//Erzeugt Zufällig Autos und setzt sie auf Zufällige Parkplätze
 	public static void randomfill(){
 
-		Database manageDatabase = new Database ();
+
 		int NumberoffreePArkplatz = manageDatabase.getanzahlfreeparkplaetze ();
 
 		int anzahlrandomCars = Random.Range (5, NumberoffreePArkplatz / 2);
 		for (int i=0; i<anzahlrandomCars; i++) {
-			GameObject Car;
+
 			Car = Instantiate(Resources.Load("auto")) as GameObject;
-			string naming = "LP";
+			naming = "LP";
 			naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 			naming = naming + System.Convert.ToChar(Random.Range (65, 90));
 			naming = naming + Random.Range (25, 999);
@@ -116,28 +123,28 @@ public class CreateCar : MonoBehaviour {
 			CreateCar.addrigidbody(Car);
 			CreateCar.meshcollidersetconvextrue(Car);
 			CreateCar.materialsColor(Car);
+			Car.AddComponent<bewegeAuto>();
 			}
 	
 	}
 	//Hier wird ein auto zum Kill freigegeben. Tatsächlicher kill wird aber erst in dem Script gemacht welche dem Auto Als Komponente beigefügt wird
 	public static void KillCar(){
-		Database manageDatabase = new Database ();
-		Autos car =manageDatabase.getrandomparkingcar ();
-		GameObject CarObject= GameObject.Find (car.getKennzeichen());
-		CarObject.transform.position = new Vector3(-6.35434f,0.5f,-10.67066f);
-		CarObject.transform.rotation = new Quaternion (0f, 180f, 0f, 1);
+
+		car =manageDatabase.getrandomparkingcar ();
+		Car= GameObject.Find (car.getKennzeichen());
+		Car.transform.position = new Vector3(-6.35434f,0.5f,-10.67066f);
+		Car.transform.rotation = new Quaternion (0f, 180f, 0f, 1);
 		manageDatabase.setcartoleave (car.getKennzeichen ());
 
 
 	}
 
 	public static void ParkAuto(){
-		Database manageDatabase = new Database ();
-		Autos car = manageDatabase.getActiveAuto ();
+
+		car = manageDatabase.getActiveAuto ();
 		manageDatabase.deactivateauto (car);
 		manageDatabase.UpdateStatusDrone ("QuadCopter", "3");
-	
-	
+		GameObject.Find ("QuadCopter").GetComponent<Waypoint> ().idleset ();
 	}
 
 }

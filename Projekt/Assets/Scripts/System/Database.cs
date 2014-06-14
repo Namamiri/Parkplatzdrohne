@@ -8,7 +8,8 @@ using System.Collections.Generic;
   
 public class Database {
 	string _strDBName = "URI=file:MasterSQLite.db";
-
+	int StatusCar;
+	int StatusDrone;
 	public void Start () {
 		Debug.Log("Datenbankklasse startet");
 
@@ -685,7 +686,7 @@ public class Database {
 			Debug.Log("PARKPLATZ Exists");
 		}
 
-		deleteTabelle ("DRONEN");
+		//deleteTabelle ("DRONEN");
 
 		if (abfrageexisttabelle ("DRONEN") == 0) {
 			sql = "CREATE TABLE DRONEN (DRONENNAME VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, STATUS INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(DronenName))";
@@ -798,6 +799,7 @@ public class Database {
 		_command.Dispose();
 		//_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		//_connection = null;
 		Debug.Log (autodaten.getKennzeichen ());
 
@@ -830,6 +832,7 @@ public class Database {
 		_command.Dispose();
 		//_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		//_connection = null;
 		
 	}
@@ -853,8 +856,10 @@ public class Database {
 		
 		_command.Dispose();
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
 		_reader.Close();
+		_reader.Dispose ();
 		return Auto;
 		}
 
@@ -872,6 +877,7 @@ public class Database {
 		_command.Dispose();
 		//_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		//_connection = null;
 		}
 	public Autos getrandomparkingcar(){
@@ -899,7 +905,10 @@ public class Database {
 		_command.Dispose();
 		//_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		//_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
 		return car;
 		}
 	// AutoStatus wird auf 3 Gesetzt Damit der 3th Script innerhalb der CarKomponenten aktiviert wird
@@ -917,6 +926,7 @@ public class Database {
 		_command.Dispose();
 		//_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		//_connection = null;
 		}
 	// Diese Funktion übernimmt die Dtenbankeinträge beim Einchecken gleichzeitig wird überprüft ob noch Parkplätze frei sind
@@ -939,17 +949,18 @@ public class Database {
 			}
 		}
 	// Hier wird ein auto gelöscht
-	public void deletecar(Autos car){
+	public void deletecar(String Kennzeichen){
 		Debug.Log ("delete Car");
 		IDbConnection _connection = new SqliteConnection(_strDBName);
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		_connection.Open();
-		sql = " Delete From AUTOS WHERE KENNZEICHEN= '"+car.getKennzeichen()+"'";
+		sql = " Delete From AUTOS WHERE KENNZEICHEN= '"+Kennzeichen+"'";
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 		
 		_connection.Close ();
+		_connection.Dispose ();
 		_command.Dispose();
 	}
 	public bool getifactiveCarExists(){
@@ -967,23 +978,29 @@ public class Database {
 		if (0 < System.Convert.ToInt32 (_reader ["Count"])) 
 		{	_command.Dispose();
 			_connection .Close();
+			_connection.Dispose();
 			_connection = null;
 			_reader.Close();
+			_reader.Dispose();
 			return true;
 				}
 		else{
 			_command.Dispose();
 			_connection .Close();
+			_connection.Dispose();
 			_connection = null;
 			_reader.Close();
+			_reader.Dispose();
 			return false;
 		}
 		
 		
 		_command.Dispose();
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
 		_reader.Close();
+		_reader.Dispose ();
 	
 		}
 	public void allesaufanfang(){
@@ -1001,6 +1018,7 @@ public class Database {
 		_command.ExecuteNonQuery ();
 		_command.Dispose();
 		_connection .Close();
+		_connection.Dispose ();
 		_connection = null;
 		}
 
@@ -1015,7 +1033,8 @@ public class Database {
 		_command.ExecuteNonQuery ();
 		
 		_connection.Close ();
-
+		_command.Dispose ();
+		_connection.Dispose ();
 		Drone drone = new Drone ();
 		drone.setName ("QuadCopter");drone.setStatus ("0");this.addDrone (drone);
 		}
@@ -1033,6 +1052,7 @@ public class Database {
 		_command.Dispose();
 		//_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		//_connection = null;
 		}
 	public void UpdateStatusDrone(String Name,String Status){
@@ -1049,6 +1069,7 @@ public class Database {
 		_command.Dispose();
 		//_command = null;
 		_connection .Close();
+		_connection.Dispose ();
 		//_connection = null;
 		}
 	public int getStatusDrone(String Name){
@@ -1062,7 +1083,36 @@ public class Database {
 		_reader = _command.ExecuteReader();
 		
 		_reader.Read ();
+		StatusDrone = System.Convert.ToInt32 (_reader ["STATUS"]);
+		_command.Dispose();
+		//_command = null;
+		_connection .Close();
+		_connection.Dispose ();
+		//_connection = null;
+		_reader.Close ();
+		_reader.Dispose ();
+		return StatusDrone;
+		}
+	public int stateofcar(String Kennzeichen){
+		IDbConnection _connection = new SqliteConnection(_strDBName);
+		IDbCommand _command = _connection .CreateCommand();
+		string sql;
+		IDataReader _reader;
+		_connection .Open();
 
-		return System.Convert.ToInt32(_reader["STATUS"]);
+		sql = "SELECT STATUS FROM AUTOS WHERE KENNZEICHEN = '"+Kennzeichen+"' Limit 1 ";
+		_command.CommandText = sql;
+		_reader = _command.ExecuteReader();
+		
+		_reader.Read ();
+		StatusCar = System.Convert.ToInt32 (_reader ["STATUS"]);
+		_reader.Close ();
+		_reader.Dispose ();
+		_command.Dispose();
+		//_command = null;
+		_connection .Close();
+		//_connection = null;
+		return StatusCar;
+
 		}
 }
