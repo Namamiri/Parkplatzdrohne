@@ -879,9 +879,9 @@ public class Database {
 		_command.CommandText = sql;
 		_reader = _command.ExecuteReader();
 		List<Parkplatz> Liste= new List<Parkplatz> ();
-		Parkplatz platz=new Parkplatz();
-		while (_reader.Read ()) {
 
+		while (_reader.Read ()) {
+			Parkplatz platz=new Parkplatz();
 			platz.setPARKPLATZNUMMER(System.Convert.ToString(_reader["PARKPLATZNUMMER"]));
 			platz.setFREI(System.Convert.ToString(_reader["FREI"]));
 			platz.setKENNZEICHEN(System.Convert.ToString(_reader["KENNZEICHENFAHRZEUG"]));
@@ -969,9 +969,11 @@ public class Database {
 		System.Random Randomizer=new System.Random();
 		List<Parkplatz> parkplaetze = this.getfreeParkplatz ();
 		int anzahlfreierParkplaetze=parkplaetze.Count;
+		Debug.Log ("ParkplätzeCount "+parkplaetze.Count);
 		Parkplatz gewaehlt;
 
 		int wohin = Randomizer.Next (0, anzahlfreierParkplaetze-1);
+		Debug.Log ("Wohin "+wohin);
 		gewaehlt = parkplaetze [wohin];
 		this.setStatusbesetztParkplatz (Carname, gewaehlt);
 		return  gewaehlt;
