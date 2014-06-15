@@ -1,5 +1,5 @@
 // Converted from UnityScript to C# at http://www.M2H.nl/files/js_to_c.php - by Mike Hergaarden
-
+// Original Script to find at MenuBar--> Assets--> Import Package--> Scripts
 using UnityEngine;
 using System.Collections;
 
