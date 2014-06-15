@@ -11,12 +11,8 @@ public class StartSimu : MonoBehaviour {
 	void Start () {
 
 		Database datenbank = new Database ();
-		//datenbank.createDatabase ();
-		//datenbank.filltableParkplatz ();
-		//datenbank.fillTypPunkt ();
-		//datenbank.filltableRoutenPunkte();
-		//datenbank.filltableRoute ();
-		datenbank.fillTableDronen ();
+		datenbank.createDatabase ();
+
 		datenbank.allesaufanfang ();
 		//this.Cars.Add(CreateCar.fromPrefab ());
 		//this.Cars.Add(CreateCar.fromfbx ());

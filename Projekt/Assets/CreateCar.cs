@@ -37,36 +37,43 @@ public class CreateCar : MonoBehaviour {
 	}
 	// Hier wird ein neues Auto Erzeugt, aber erst wenn das Schreiben in die Datenbank erfolg hatte
 	public static bool onstartpoint(){
+				if (manageDatabase.getStatusDrone ("QuadCopter") == 0) {
+						if (manageDatabase.getifactiveCarExists () == false) {
+								naming = "LP";
+								naming = naming + System.Convert.ToChar (Random.Range (65, 90));
+								naming = naming + System.Convert.ToChar (Random.Range (65, 90));
+								naming = naming + Random.Range (25, 999);
 
-		if(manageDatabase.getifactiveCarExists ()==false){
-		naming = "LP";
-		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
-		naming = naming + System.Convert.ToChar(Random.Range (65, 90));
-		naming = naming + Random.Range (25, 999);
+								bool hatfunktioniert = manageDatabase.einchecken (naming);
 
-		bool hatfunktioniert=manageDatabase.einchecken (naming);
-
-		if (hatfunktioniert) {
+								if (hatfunktioniert) {
 			
-			Car = Instantiate (Resources.Load ("auto")) as GameObject;
-			Car.name = naming;
-			Car.transform.localScale = new Vector3 (10, 10, 10);
-			// HIer ist der StartPunkt an dem das Auto geladen wird
-			Car.transform.position = new Vector3 (-7.74f, 2f, -11.53f);
-			// Komponenten werden Eingefügt
-			CreateCar.addrigidbody(Car);
-			CreateCar.meshcollidersetconvextrue(Car);
-			CreateCar.materialsColor(Car);
-			Car.AddComponent<bewegeAuto>();
-			manageDatabase.UpdateStatusDrone("QuadCopter","1");
-		}
-			return hatfunktioniert;}
-		else {
-			return false;
-		}
+										Car = Instantiate (Resources.Load ("auto")) as GameObject;
+										Car.name = naming;
+										Car.transform.localScale = new Vector3 (10, 10, 10);
+										// HIer ist der StartPunkt an dem das Auto geladen wird
+										Car.transform.position = new Vector3 (-7.74f, 2f, -11.53f);
+										// Komponenten werden Eingefügt
+										CreateCar.addrigidbody (Car);
+										CreateCar.meshcollidersetconvextrue (Car);
+										CreateCar.materialsColor (Car);
+										Car.AddComponent<bewegeAuto> ();
+										manageDatabase.UpdateStatusDrone ("QuadCopter", "1");
+										GameObject.Find ("CarCam").GetComponent<SmoothFollow>().target=Car.transform;
+										GameObject.Find("CarCam").camera.enabled=true;
+										GameObject.Find("Main Camera").camera.enabled=false;
+										
+								}
+								return hatfunktioniert;
+						} else {
+								return false;
+						}
 
 		
-	}
+				} else {
+			return false;		
+		}
+		}
 	// Dem Jeweiligen Object wird eine RigidBody zugewiesen
 	private static void addrigidbody(GameObject Car){
 		newrig = Car.AddComponent<Rigidbody> ();
@@ -147,7 +154,11 @@ public class CreateCar : MonoBehaviour {
 		car = manageDatabase.getActiveAuto ();
 		manageDatabase.deactivateauto (car);
 		manageDatabase.UpdateStatusDrone ("QuadCopter", "3");
-		GameObject.Find ("QuadCopter").GetComponent<Waypoint> ().idleset ();
+		GameObject.Find ("Parkplatz_new").GetComponent<Waypoint> ().idleset ();
+		GameObject.Find ("CarCam").camera.enabled = false;
+		GameObject.Find ("Main Camera").camera.enabled = true;
+		GameObject.Find ("CarCam").GetComponent<SmoothFollow>().target=Car.transform;
+
 	}
 
 }

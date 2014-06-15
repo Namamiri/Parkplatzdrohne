@@ -154,7 +154,7 @@ public class StartDrone : MonoBehaviour {
 			
 			if (distance3 < 0.1f){
 			manage.UpdateStatusDrone ("QuadCopter", "2");
-			state = State.Way1;
+			state = State.Idle;
 			
 			
 		}
