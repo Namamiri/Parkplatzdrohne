@@ -775,12 +775,15 @@ public class Database {
 
 		_connection .Open();
 
+
+
 		//deleteTabelle ("Routenpunkte");
 
 		if (abfrageexisttabelle ("Routenpunkte") == 0) {
 			sql = "CREATE TABLE Routenpunkte (ID INT , Knotenname VARCHAR(55), XKOORD FLOAT, ZKOORD FLOAT, TYPID INT, PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery ();
+			this.filltableRoutenPunkte();
 				} else {
 			Debug.Log("Routenpunkte Exists");
 				}
@@ -791,6 +794,7 @@ public class Database {
 			sql = "CREATE TABLE TYPPUNKTE (ID INT, TYPBEZEICHNUNG VARCHAR(55), PRIMARY KEY(ID))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
+			this.fillTypPunkt ();
 		} else {
 			Debug.Log("TYPPUNKTE Exists");
 		}
@@ -801,6 +805,7 @@ public class Database {
 						sql = "CREATE TABLE ROUTE (ROUTENID INT, POSITION INT, PUNKTID INT, PRIMARY KEY(ROUTENID, POSITION))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
+			this.filltableRoute ();
 		} else {
 			Debug.Log("ROUTE Exists");
 		}
@@ -811,6 +816,7 @@ public class Database {
 			sql = "CREATE TABLE PARKPLATZ (PARKPLATZNUMMER INT, ROUTENID INT, FREI INT, KENNZEICHENFAHRZEUG VARCHAR(12), XKOORD FLOAT, ZKOORD FLOAT, PRIMARY KEY(PARKPLATZNUMMER))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
+			this.filltableParkplatz ();
 		} else {
 			Debug.Log("PARKPLATZ Exists");
 		}
@@ -821,6 +827,7 @@ public class Database {
 			sql = "CREATE TABLE DRONEN (DRONENNAME VARCHAR(50), AKTUELLERKNOTEN INT, LASTUSED DATE, HOMEPUNKTID INT, STATUS INT,CARTOSHOW VARCHAR(12),  PRIMARY KEY(DronenName))";
 						_command.CommandText = sql;
 						_command.ExecuteNonQuery();
+			this.fillTableDronen ();
 		} else {
 			Debug.Log("DRONEN Exists");
 		}
@@ -1261,27 +1268,31 @@ public class Database {
 
 	// Hier wird der Status des Gegebenen Drone Zurückgeschickt
 	public int getStatusDrone(String Name){
-		IDbConnection _connection = new SqliteConnection(_strDBName);
-		IDbCommand _command = _connection .CreateCommand();
-		string sql;
-		IDataReader _reader;
-		_connection .Open();
-		sql = "SELECT STATUS FROM DRONEN WHERE DRONENNAME = '"+Name+"' Limit 1 ";
-		_command.CommandText = sql;
-		_reader = _command.ExecuteReader();
+		if (this.abfrageexisttabelle ("DRONEN") == 0) {
+						return 0;
+				} else {
+						IDbConnection _connection = new SqliteConnection (_strDBName);
+						IDbCommand _command = _connection .CreateCommand ();
+						string sql;
+						IDataReader _reader;
+						_connection .Open ();
+						sql = "SELECT STATUS FROM DRONEN WHERE DRONENNAME = '" + Name + "' Limit 1 ";
+						_command.CommandText = sql;
+						_reader = _command.ExecuteReader ();
 		
-		_reader.Read ();
-		StatusDrone = System.Convert.ToInt32 (_reader ["STATUS"]);
-		_command.Dispose();
-		_command = null;
-		_connection .Close();
-		_connection.Dispose ();
-		_connection = null;
-		_reader.Close ();
-		_reader.Dispose ();
-		_reader = null;
-		sql = null;
-		return StatusDrone;
+						_reader.Read ();
+						StatusDrone = System.Convert.ToInt32 (_reader ["STATUS"]);
+						_command.Dispose ();
+						_command = null;
+						_connection .Close ();
+						_connection.Dispose ();
+						_connection = null;
+						_reader.Close ();
+						_reader.Dispose ();
+						_reader = null;
+						sql = null;
+						return StatusDrone;
+				}
 		}
 
 	// Hier wird der Status des Gegebenen Autos Zurückgeschickt
