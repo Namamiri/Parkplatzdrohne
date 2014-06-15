@@ -37,7 +37,7 @@ public class CreateCar : MonoBehaviour {
 	}
 	// Hier wird ein neues Auto Erzeugt, aber erst wenn das Schreiben in die Datenbank erfolg hatte
 	public static bool onstartpoint(){
-				if (manageDatabase.getStatusDrone ("QuadCopter")==0) {
+				if (manageDatabase.getStatusDrone ("QuadCopter") == 0) {
 						if (manageDatabase.getifactiveCarExists () == false) {
 								naming = "LP";
 								naming = naming + System.Convert.ToChar (Random.Range (65, 90));
@@ -66,7 +66,9 @@ public class CreateCar : MonoBehaviour {
 						}
 
 		
-				}
+				} else {
+			return false;		
+		}
 		}
 	// Dem Jeweiligen Object wird eine RigidBody zugewiesen
 	private static void addrigidbody(GameObject Car){
