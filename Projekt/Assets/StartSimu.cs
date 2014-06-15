@@ -16,7 +16,7 @@ public class StartSimu : MonoBehaviour {
 		//datenbank.fillTypPunkt ();
 		//datenbank.filltableRoutenPunkte();
 		//datenbank.filltableRoute ();
-		datenbank.fillTableDronen ();
+		//datenbank.fillTableDronen ();
 		datenbank.allesaufanfang ();
 		//this.Cars.Add(CreateCar.fromPrefab ());
 		//this.Cars.Add(CreateCar.fromfbx ());

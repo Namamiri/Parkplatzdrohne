@@ -1185,6 +1185,10 @@ public class Database {
 		_command.CommandText = sql;
 		_command.ExecuteNonQuery ();
 
+		sql=" UPDATE DRONEN SET STATUS='0' WHERE STATUS > 0 ";
+		_command.CommandText = sql;
+		_command.ExecuteNonQuery ();
+
 		_command.Dispose();
 		_command = null;
 		_connection .Close();
