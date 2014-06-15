@@ -59,6 +59,10 @@ public class CreateCar : MonoBehaviour {
 										CreateCar.materialsColor (Car);
 										Car.AddComponent<bewegeAuto> ();
 										manageDatabase.UpdateStatusDrone ("QuadCopter", "1");
+										GameObject.Find ("CarCam").GetComponent<SmoothFollow>().target=Car.transform;
+										GameObject.Find("CarCam").camera.enabled=true;
+										GameObject.Find("Main Camera").camera.enabled=false;
+										
 								}
 								return hatfunktioniert;
 						} else {
@@ -151,6 +155,10 @@ public class CreateCar : MonoBehaviour {
 		manageDatabase.deactivateauto (car);
 		manageDatabase.UpdateStatusDrone ("QuadCopter", "3");
 		GameObject.Find ("Parkplatz_new").GetComponent<Waypoint> ().idleset ();
+		GameObject.Find ("CarCam").camera.enabled = false;
+		GameObject.Find ("Main Camera").camera.enabled = true;
+		GameObject.Find ("CarCam").GetComponent<SmoothFollow>().target=Car.transform;
+
 	}
 
 }
