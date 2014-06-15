@@ -71,7 +71,7 @@ public class Rueckweg : MonoBehaviour {
 		
 		
 		
-		if (3==manage.getStatusDrone(QuadCopter.name)){
+		if (3==manage.getStatusDrone(GameObject.Find ("QuadCopter").name)){
 			
 			switch (state) {
 			case State.Idle:

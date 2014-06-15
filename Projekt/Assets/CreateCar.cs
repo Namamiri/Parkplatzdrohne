@@ -11,6 +11,7 @@ public class CreateCar : MonoBehaviour {
 	private static GameObject componente=null;
 	private static MeshCollider[] meshcollider;
 	private static Rigidbody newrig;
+
 	// Test nummer Eins ein Object per Code aus einer Prefab laden per Code
 	public static GameObject fromPrefab(){
 
@@ -115,10 +116,10 @@ public class CreateCar : MonoBehaviour {
 	//Erzeugt Zufällig Autos und setzt sie auf Zufällige Parkplätze
 	public static void randomfill(){
 
-
+		System.Random Randomizer=new System.Random();
 		int NumberoffreePArkplatz = manageDatabase.getanzahlfreeparkplaetze ();
 
-		int anzahlrandomCars = Random.Range (5, NumberoffreePArkplatz / 2);
+		int anzahlrandomCars = Randomizer.Next(5, NumberoffreePArkplatz / 2);
 		for (int i=0; i<anzahlrandomCars; i++) {
 
 			Car = Instantiate(Resources.Load("auto")) as GameObject;

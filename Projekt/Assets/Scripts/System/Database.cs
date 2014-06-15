@@ -966,15 +966,14 @@ public class Database {
 		auto.setKennzeichen (Carname);
 		auto.setStatus ("2");
 		this.addauto (auto);
+		System.Random Randomizer=new System.Random();
 		List<Parkplatz> parkplaetze = this.getfreeParkplatz ();
 		int anzahlfreierParkplaetze=parkplaetze.Count;
 		Parkplatz gewaehlt;
 
-		int wohin = UnityEngine.Random.Range (0, anzahlfreierParkplaetze-1);
+		int wohin = Randomizer.Next (0, anzahlfreierParkplaetze-1);
 		gewaehlt = parkplaetze [wohin];
 		this.setStatusbesetztParkplatz (Carname, gewaehlt);
-		auto = null;
-		parkplaetze = null;
 		return  gewaehlt;
 		}
 
@@ -1052,6 +1051,7 @@ public class Database {
 		IDbCommand _command = _connection .CreateCommand();
 		string sql;
 		IDataReader _reader;
+
 		_connection .Open();
 		sql = "SELECT Count(KENNZEICHEN) as COUNT FROM AUTOS WHERE STATUS='2' ";
 		_command.CommandText = sql;
