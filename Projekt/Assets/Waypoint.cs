@@ -158,12 +158,11 @@ public class Waypoint : MonoBehaviour {
 			QuadCopter.transform.rotation = Quaternion.Slerp (QuadCopter.transform.rotation, Quaternion.LookRotation (way4.transform.position - QuadCopter.transform.position), rotationSpeed + Time.deltaTime);
 			QuadCopter.transform.position += QuadCopter.transform.forward * moveSpeed * Time.deltaTime;
 			
-			//if (distance3 < 2f)
-			
-			//state = State.Way1;
+			if (distance3 < 0.1f)
+				manage.UpdateStatusDrone(QuadCopter.name,"0");
+				state = State.Idle;
+			}
 
-			
-		}
 	}
 	
 	/*public Transform other;
